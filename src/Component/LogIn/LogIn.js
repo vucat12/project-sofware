@@ -2,16 +2,21 @@
 import React from 'react';
 import './LogIn.scss';
 import { Form, Input, Button } from "antd";
+import { useHistory } from 'react-router';
 
 
 
 export const LogIn = () => {
+
+    const history = useHistory();
+
     const onFinish = (values) => {
         console.log("Success:", values);
       };
     
       const onFinishFailed = (errorInfo) => {
         console.log("Failed:", errorInfo);
+        history.push('/calendar-page')
       };
    
     return (

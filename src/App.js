@@ -1,11 +1,16 @@
 import './App.css';
-import { LogIn } from './Component/LogIn/LogIn';
 import './common/index.scss';
+import {BrowserRouter as Router } from 'react-router-dom';
+import Routing from './Routing/Routing';
+import { createBrowserHistory } from "history";
+const history = createBrowserHistory();
 
 function App() {
   return (
     <div>
-      <LogIn/>
+      <Router history={history}>
+        <Routing/>
+      </Router>
     </div>
   );
 }

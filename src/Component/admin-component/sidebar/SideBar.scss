@@ -1,0 +1,26 @@
+.side-bar {
+    &-title {
+        width: 100%;
+        .home {
+            font-weight: bold;
+            font-size: 20px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        .btn-collapsed {
+            display: inline-block;
+            width: 120px;
+            float: right;
+            opacity: 0.9;
+        }
+    }
+    &-collapsed {
+        min-width: 120px !important;
+    }
+
+    
+
+    .ant-menu-inline {
+        min-width: 240px !important;
+    }
+}
