@@ -1,11 +1,16 @@
 .root {
     display: flex;
     flex-direction: row;
-    overflow-x: hidden;
+    overflow: hidden;
     &-left {
 
     }
     &-right {
-
+        min-height: 100vh;
+        width: 100%;
+        &_content {
+            padding: 35px;
+            background-color: #F1F3F6;
+        }
     }
 }

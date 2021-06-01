@@ -1,0 +1,11 @@
+.student-management {
+    &-popup {
+        .ant-row {
+            padding: 8px 0;
+        }
+    }
+    &-search {
+        padding: 16px 0;
+        text-align: right;
+    }
+}

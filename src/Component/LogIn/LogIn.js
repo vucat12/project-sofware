@@ -3,6 +3,7 @@ import React from 'react';
 import './LogIn.scss';
 import { Form, Input, Button } from "antd";
 import { useHistory } from 'react-router';
+import { LogInPage } from '../../services/authen';
 
 
 
@@ -11,12 +12,13 @@ export const LogIn = () => {
     const history = useHistory();
 
     const onFinish = (values) => {
-        console.log("Success:", values);
+        LogInPage(values.username, values.password).then(res => {
+            if(res.status === 200) window.location.pathname = '/admin/home';
+        });
       };
     
       const onFinishFailed = (errorInfo) => {
-        console.log("Failed:", errorInfo);
-        history.push('/calendar-page')
+        
       };
    
     return (

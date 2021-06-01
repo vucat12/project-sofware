@@ -1,7 +1,9 @@
 .side-bar {
+    height: 100%;
     &-title {
         width: 100%;
         .home {
+            height: 38px;
             font-weight: bold;
             font-size: 20px;
             text-align: center;
@@ -18,9 +20,12 @@
         min-width: 120px !important;
     }
 
-    
+    .ant-menu-dark {
+        height: 100%;
+    }
 
     .ant-menu-inline {
         min-width: 240px !important;
     }
+
 }
