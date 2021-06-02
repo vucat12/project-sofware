@@ -58,6 +58,11 @@ function SideBar() {
           Course Management
           </Link>
         </Menu.Item>
+        <Menu.Item key="5" icon={<AppstoreOutlined />}>
+          <Link to="/admin/semester-management">
+          Semester Management
+          </Link>
+        </Menu.Item>
       </Menu>
 
 

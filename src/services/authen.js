@@ -23,7 +23,6 @@ export const includeAuthenHeader = () => {
 
 export const checkAuthenRole = () => {
     const authen = localStorage.getItem('access_token');
-    console.log("=========", authen);
     if(authen) {
         const decoded = decode(authen);
         return decoded.role;

@@ -1,6 +1,6 @@
 import { Form, Button, Col, Input, Row, Table } from 'antd'
 import Modal from 'antd/lib/modal/Modal';
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { getListCourse, postNewCourse } from '../../../services/admin/courseServices';
 import './CourseManagement.scss';
 
@@ -18,7 +18,6 @@ function CourseManagement() {
 const [dataSource, setDataSource] = useState([]);
 const [filter, setFilter] = useState({});
 const [isModalVisible, setIsModalVisible] = useState(false);
-const [dataPost, setDataPost] = useState({});
 
 const [form] = Form.useForm();
 
@@ -76,8 +75,8 @@ async function getDataCourse() {
     return (
         <div className="course-management">
             <Row className="course-management-header">
-                <Col span={12}><Button type="primary" onClick={() => setIsModalVisible(true)}>Thêm mới</Button></Col>
-                <Col span={12}></Col>
+              <Col span={12}></Col>
+              <Col span={12} className="text-right"><Button type="primary" onClick={() => setIsModalVisible(true)}>Thêm mới</Button></Col>
             </Row>
            <Table
               columns={columns}

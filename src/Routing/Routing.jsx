@@ -9,6 +9,7 @@ import CalendarPage from '../Component/admin-component/calendar-page/CalendarPag
 import StudentManagement from '../Component/admin-component/student-management/StudentManagement';
 import CourseManagement from '../Component/admin-component/course-management/CourseManagement';
 import { checkAuthenRole } from '../services/authen';
+import SemesterManagement from '../Component/admin-component/semester-management/SemesterManagement';
 
 function Routing() {
 const history = useHistory();
@@ -41,6 +42,7 @@ const history = useHistory();
                             <Route path="/admin/calendar-page" component={CalendarPage}/>
                             <Route path="/admin/student-management"><StudentManagement/></Route>
                             <Route path="/admin/course-management"><CourseManagement/></Route>
+                            <Route path="/admin/semester-management"><SemesterManagement/></Route>
                         </div>
                         
                     </div>
