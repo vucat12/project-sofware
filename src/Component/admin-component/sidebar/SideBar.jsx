@@ -33,6 +33,7 @@ function SideBar() {
           </Button>
         </div>
       <Menu
+        defaultSelectedKeys={['1']}
         mode="inline"
         theme="dark"
         inlineCollapsed={collapsed}
@@ -61,6 +62,16 @@ function SideBar() {
         <Menu.Item key="5" icon={<AppstoreOutlined />}>
           <Link to="/admin/semester-management">
           Semester Management
+          </Link>
+        </Menu.Item>
+        <Menu.Item key="6" icon={<ContainerOutlined />}>
+          <Link to="/admin/open-course">
+          Open Course
+          </Link>
+        </Menu.Item>
+        <Menu.Item key="7" icon={<PieChartOutlined />}>
+          <Link to="/admin/class-management">
+          Class Management
           </Link>
         </Menu.Item>
       </Menu>

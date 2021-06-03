@@ -1,8 +1,8 @@
 import { Form, Button, Col, Input, Row, Table, Breadcrumb } from 'antd'
 import Modal from 'antd/lib/modal/Modal';
 import React, { useEffect, useState } from 'react'
-import { getListCourse, postNewCourse } from '../../../services/admin/courseServices';
-import './CourseManagement.scss';
+import { getListOpenCourse, postNewOpenCourse } from '../../../services/admin/openCourseServices';
+import './OpenCourse.scss';
 
 
 const layout = {
@@ -14,7 +14,7 @@ const layout = {
   },
 };
 
-function CourseManagement() {
+function OpenCourse() {
 const [dataSource, setDataSource] = useState([]);
 const [filter, setFilter] = useState({});
 const [isModalVisible, setIsModalVisible] = useState(false);
@@ -22,49 +22,56 @@ const [isModalVisible, setIsModalVisible] = useState(false);
 const [form] = Form.useForm();
 
 useEffect(() => {
-    getDataCourse();
+    getDataOpenCourse();
 }, []);
 
-async function getDataCourse() {
-    let data = await getListCourse(filter);
+async function getDataOpenCourse() {
+    let data = await getListOpenCourse(filter);
     setDataSource(data.data);
 }
 
     const columns = [
         {
-          title: 'Tên môn',
-          dataIndex: 'name',
+          title: 'Tên lớp',
+          dataIndex: 'class_name',
           align: 'center'
         },
         {
-          title: 'Tín chỉ',
-          dataIndex: 'credit_quantity',
+          title: 'Tên khóa học',
+          dataIndex: 'course_name',
           align: 'center'
         },
         {
-          title: 'Giá tín chỉ',
-          dataIndex: 'price_advanced',
+          title: 'Ngày học',
+          dataIndex: 'day_of_week',
           align: 'center'
         },
         {
-          title: 'Giá tín chỉ học lại',
-          dataIndex: 'price_basic',
+          title: 'Tên giảng viên',
+          dataIndex: 'lecturer_name',
           align: 'center'
         },
         {
-          title: 'Loại',
-          dataIndex: 'type_course',
+          title: 'Số lượng sinh viên tối đa',
+          dataIndex: 'max_quantity_student',
           align: 'center'
+        },
+        {
+          title: 'Học kỳ',
+          dataIndex: 'semester',
+          align: 'center'
+        },
+        {
+          title: 'Học kỳ',
+          dataIndex: 'shifts',
+          align: 'center',
         },
       ];
 
     const handleOk = async () => {
       let data = form.getFieldValue();
-      data.credit_quantity = parseInt(data.credit_quantity);
-      data.price_advanced = parseInt(data.price_advanced);
-      data.price_basic = parseInt(data.price_basic);
-      await postNewCourse(data);
-      getDataCourse();
+      await postNewOpenCourse(data);
+      getDataOpenCourse();
       setIsModalVisible(false);
     };  
 
@@ -73,12 +80,12 @@ async function getDataCourse() {
     };
 
     return (
-        <div className="course-management">
-            <Row className="course-management-header">
+        <div className="open-course">
+            <Row className="open-course-header">
             <Col span={12} className="align-center">
             <Breadcrumb>
               <Breadcrumb.Item>Admin</Breadcrumb.Item>
-              <Breadcrumb.Item>Course Management</Breadcrumb.Item>
+              <Breadcrumb.Item>Open Course</Breadcrumb.Item>
             </Breadcrumb>
             </Col>
               <Col span={12} className="text-right"><Button type="primary" onClick={() => setIsModalVisible(true)}>Thêm mới</Button></Col>
@@ -87,7 +94,7 @@ async function getDataCourse() {
               columns={columns}
               dataSource={dataSource}
            />
-        <Modal className="course-management-popup" title="Thêm mới môn học" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+        <Modal className="open-course-popup" title="Thêm mới môn học" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
         <Form
         form={form}
       {...layout}
@@ -140,4 +147,4 @@ async function getDataCourse() {
     )
 }
 
-export default CourseManagement
+export default OpenCourse

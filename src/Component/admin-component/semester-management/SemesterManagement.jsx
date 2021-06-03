@@ -1,4 +1,4 @@
-import { Form, Button, Col, Input, Row, Table, DatePicker } from 'antd'
+import { Form, Button, Col, Input, Row, Table, DatePicker, Breadcrumb } from 'antd'
 import Modal from 'antd/lib/modal/Modal';
 import React, { useEffect, useState } from 'react'
 import { getListSemester, postNewSemester } from '../../../services/admin/semesterServices';
@@ -74,7 +74,12 @@ async function getDataSemester() {
     return (
         <div className="semester-management">
             <Row className="semester-management-header">
-              <Col span={12}></Col>
+            <Col span={12} className="align-center">
+            <Breadcrumb>
+              <Breadcrumb.Item>Admin</Breadcrumb.Item>
+              <Breadcrumb.Item>Semester Management</Breadcrumb.Item>
+            </Breadcrumb>
+            </Col>
               <Col span={12} className="text-right"><Button type="primary" onClick={() => setIsModalVisible(true)}>Thêm mới học kỳ</Button></Col>
             </Row>
            <Table

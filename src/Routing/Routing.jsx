@@ -10,6 +10,8 @@ import StudentManagement from '../Component/admin-component/student-management/S
 import CourseManagement from '../Component/admin-component/course-management/CourseManagement';
 import { checkAuthenRole } from '../services/authen';
 import SemesterManagement from '../Component/admin-component/semester-management/SemesterManagement';
+import OpenCourse from '../Component/admin-component/open-course/OpenCourse';
+import ClassManagement from '../Component/admin-component/class-management/ClassManagement';
 
 function Routing() {
 const history = useHistory();
@@ -43,6 +45,8 @@ const history = useHistory();
                             <Route path="/admin/student-management"><StudentManagement/></Route>
                             <Route path="/admin/course-management"><CourseManagement/></Route>
                             <Route path="/admin/semester-management"><SemesterManagement/></Route>
+                            <Route path="/admin/open-course"><OpenCourse/></Route>
+                            <Route path="/admin/class-management"><ClassManagement/></Route>
                         </div>
                         
                     </div>

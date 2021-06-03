@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Row, Table, Tag } from 'antd';
+import { Breadcrumb, Col, Row, Table, Tag } from 'antd';
 import { getListStudents, getStudentById } from '../../../services/admin/studentServices';
 import moment from 'moment';
 import Modal from 'antd/lib/modal/Modal';
@@ -99,12 +99,22 @@ function StudentManagement() {
 
     return (
         <div className="student-management">
-          <div className="student-management-search">
-          <Select defaultValue="DESC" style={{ width: 120 }} onChange={handleChange}>
-            <Option value="ASC">ASC</Option>
-            <Option value="DESC">DESC</Option>
-          </Select>
-          </div>
+          <Row className="pt-3 pb-3">
+            <Col span={12} className="align-center">
+            <Breadcrumb>
+              <Breadcrumb.Item>Admin</Breadcrumb.Item>
+              <Breadcrumb.Item>Student Management</Breadcrumb.Item>
+            </Breadcrumb>
+            </Col>
+            <Col span={12} className="text-right">
+              <div>
+              <Select defaultValue="DESC" style={{ width: 120 }} onChange={handleChange}>
+                <Option value="ASC">ASC</Option>
+                <Option value="DESC">DESC</Option>
+              </Select>
+              </div>
+            </Col>
+          </Row>
              <Table
                 columns={columns}
                 dataSource={dataSource}

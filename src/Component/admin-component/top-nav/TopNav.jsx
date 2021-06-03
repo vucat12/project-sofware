@@ -1,13 +1,16 @@
 import React from 'react';
-import { Menu } from 'antd';
+import { Button, Menu } from 'antd';
 import './TopNav.scss';
-import { GithubOutlined } from '@ant-design/icons';
 
 function TopNav() {
+  const handleLogout = () => {
+    localStorage.removeItem("access_token");
+    window.location.pathname = "/login";
+  }
     return (
       <Menu mode="horizontal" className="top-nav">
-          <Menu.Item key="user" className="top-nav-user">
-            <GithubOutlined style={{fontSize: '20px'}}/>
+          <Menu.Item key="user" className="top-nav-user align-center">
+          <Button type="primary" onClick={()=> handleLogout()}>Log Out</Button>
           </Menu.Item>
       </Menu>
     )
