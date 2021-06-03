@@ -27,8 +27,5 @@ export const checkAuthenRole = () => {
         const decoded = decode(authen);
         return decoded.role;
     }
-    else {
-        return 0;
-    }
-   
+    else return 0;
 }

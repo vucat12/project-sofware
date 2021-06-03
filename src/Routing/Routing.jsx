@@ -12,27 +12,40 @@ import { checkAuthenRole } from '../services/authen';
 import SemesterManagement from '../Component/admin-component/semester-management/SemesterManagement';
 import OpenCourse from '../Component/admin-component/open-course/OpenCourse';
 import ClassManagement from '../Component/admin-component/class-management/ClassManagement';
+import FrontTopNav from '../Component/front-component/front-top-nav/TopNav';
+import SignUpSubject from '../Component/front-component/sign-up-subject/SignUpSubject';
 
 function Routing() {
 const history = useHistory();
 
     useEffect(() => {
-        if(!checkAuthenRole()) {
-            history.push("/login")
-        }
-        else {
-            history.push("/admin/home")
-        }
+
+        if(!checkAuthenRole()) history.push("/login")
+        if(checkAuthenRole() === "ADMIN") history.push("/admin/home")
+        if(checkAuthenRole() === "USER") console.log("==USER==")
+
     }, []);
 
     return (
         <div>
  {/* this is admin page */}
             <Switch>
-            {!checkAuthenRole() && <Route path="/login">
+
+            {checkAuthenRole() === "USER" && 
+                <div>
+                    <FrontTopNav/>
+                    <div className="center-page">
+                        <Route path="/front/sign-up-subject"><SignUpSubject/></Route>
+                    </div>
+                </div>            
+            }
+
+            {!checkAuthenRole()  && 
+            <Route path="/login">
                     <LogIn/>
             </Route>}
-            { checkAuthenRole() && 
+
+            { checkAuthenRole() === "ADMIN" && 
                 <div className="root">
                     <div className="root-left">
                     <SideBar/>
