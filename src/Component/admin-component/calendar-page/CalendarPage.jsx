@@ -42,7 +42,7 @@ function CalendarPage() {
 
     let data = await getListCalendar(filter);
     let arr = data.data.map((el, index ,final) => {
-      let count = 0;
+      let count = 1;
       for (let i = index+1; i < final.length; i++) {
         if (el.start === final[i].start && el.end === final[i].end && el.shifts=== final[i].shifts)
         count++;
@@ -50,23 +50,23 @@ function CalendarPage() {
       return {...el, count: count};
     })
 
-    let arrNew = [{}];
-
-    arr.forEach(el => {
-      arrNew.forEach(res => {
-        if(res.shifts!==el.shifts)
-        arrNew.push(el)
+    let arrNew = [];
+    arr.forEach((el, index) => {
+      let checkLoop = 0;
+      arrNew.forEach(element => {
+        if(element.shifts === el.shifts && element.start === el.start && element.end===el.end) checkLoop++;
       })
+      if (checkLoop===0) arrNew.push({...el})
     })
 
     console.log("====", arrNew);
 
 
-    data.data = data.data.map(el => {
+    data.data = arrNew.map(el => {
       let start = moment(el.start).format("YYYY-MM-DDTHH:mm:ss");
       let end = moment(el.end).format("YYYY-MM-DDTHH:mm:ss");
       let title = el.course;
-      return {...el, start: start, end: end, title: el.shifts+ ': ' +title, classNames: ['styleEvent']}
+      return {...el, start: start, end: end, title: el.shifts+ ': ' +el.count, classNames: ['styleEvent']}
     })
 
     setDataSource(data.data)
