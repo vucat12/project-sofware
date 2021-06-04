@@ -1,3 +1,10 @@
 .calendar-page {
-    
+    .fc-event-time {
+        display: none !important;
+    }
+    .styleEvent {
+        .fc-event-title {
+            text-overflow: ellipsis;
+        }
+    }
 }

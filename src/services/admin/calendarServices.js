@@ -18,6 +18,16 @@ export const getListCalendar = (filter) => {
     }).then(res => res.data)
 }
 
+export const getCalendarById = (id) => {
+    return axios({
+        method: 'get',
+        url: `${environment}/api/calendar/${id}`,
+        headers: {
+            Authorization: includeAuthenHeader(),
+        },
+    }).then(res => res.data)
+}
+
 export const getShift = () => {
     return axios({
         method: 'get',
