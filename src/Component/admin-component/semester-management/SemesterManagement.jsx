@@ -4,6 +4,9 @@ import React, { useEffect, useState } from 'react'
 import { getListSemester, postNewSemester } from '../../../services/admin/semesterServices';
 import './SemesterManagement.scss';
 import moment from 'moment';
+import { Select } from 'antd';
+
+const { Option } = Select;
 
 const layout = {
   labelCol: {
@@ -16,7 +19,7 @@ const layout = {
 
 function SemesterManagement() {
 const [dataSource, setDataSource] = useState([]);
-const [filter, setFilter] = useState(undefined);
+const [filter, setFilter] = useState({status : 'OPEN'});
 const [isModalVisible, setIsModalVisible] = useState(false);
 
 const [form] = Form.useForm();
@@ -71,6 +74,10 @@ async function getDataSemester() {
       setIsModalVisible(false);
     };
 
+    function handleStatus(value) {
+      setFilter({...filter, status: value})
+    }
+
     return (
         <div className="semester-management">
             <Row className="semester-management-header">
@@ -82,6 +89,23 @@ async function getDataSemester() {
             </Col>
               <Col span={12} className="text-right"><Button type="primary" onClick={() => setIsModalVisible(true)}>Thêm mới học kỳ</Button></Col>
             </Row>
+
+
+            <div className="text-center mb-3">
+              <span className="mr-2">Trạng thái: </span>
+
+
+              <Select className="mr-2" value={filter.status} style={{ width: 120 }} onChange={handleStatus}>
+                <Option value="OPEN">OPEN</Option>
+                <Option value="PENDING">PENDING</Option>
+                <Option value="CLOSED">CLOSED</Option>
+              </Select>
+
+
+              <Button type="primary" onClick={() => getDataSemester()}> Tìm kiếm</Button>
+            </div>
+
+
            <Table
               columns={columns}
               dataSource={dataSource}

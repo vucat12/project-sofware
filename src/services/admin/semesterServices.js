@@ -4,13 +4,14 @@ import { environment } from "../environment"
 import { notification } from 'antd';
 
 export const getListSemester = (filter) => {
-    if(!filter) filter="OPEN"
+
     return axios({
         method: 'get',
-        url: `${environment}/api/semester/search?status=${filter}`,
+        url: `${environment}/api/semester/search`,
         headers: {
             Authorization: includeAuthenHeader(),
         },
+        params: filter
     }).then(res => res.data)
 }
 

@@ -6,16 +6,25 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { getCalendarById, getClassByShift, getListCalendar, getShift } from '../../../services/admin/calendarServices';
 import moment from 'moment';
 import Modal from 'antd/lib/modal/Modal';
-import { Button } from 'antd';
+import { Breadcrumb, Button, Col, Input, Row } from 'antd';
 import './CalendarPage.scss';
+import {
+  SearchOutlined
+} from '@ant-design/icons';
+
+let filter = {
+  fromDate: '',
+  toDate: '',
+}
 
 function CalendarPage() {
+
   const [dataSource, setDataSource] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [dataEvent, setDataEvent] = useState({});
   const [dataShifts, setDataShifts] = useState([]);
   const [dataClass, setDataClass] = useState({});
-
+  const [valueSearch, setValueSearch] = useState({class_name: '', course_name: ''});
 
   useEffect(() => {
     getShift().then(res => {setDataShifts(res)})
@@ -42,13 +51,15 @@ function CalendarPage() {
   }
 
   const handleDate = async (event) => {
-    let filter = {
+    filter = {
       fromDate: moment(event.start).format("YYYY-MM-DD"),
       toDate: moment(event.end).format("YYYY-MM-DD"),
     }
+    await getDataSource();
+  }
 
-
-    let data = await getListCalendar(filter);
+  async function getDataSource() {
+    let data = await getListCalendar({...filter, ...valueSearch});
     let arr = data.data.map((el, index ,final) => {
       let count = 1;
       for (let i = index+1; i < final.length; i++) {
@@ -57,7 +68,6 @@ function CalendarPage() {
       }
       return {...el, count: count};
     })
-
     let arrNew = [];
     arr.forEach((el, index) => {
       let checkLoop = 0;
@@ -72,7 +82,6 @@ function CalendarPage() {
       let end = moment(el.end).format("YYYY-MM-DDTHH:mm:ss");
       return {...el, start: start, end: end, title: el.shifts+ ': ' + el.count + ' Lớp', classNames: ['styleEvent']}
     })
-
     setDataSource(data.data)
   }
 
@@ -91,11 +100,50 @@ function CalendarPage() {
     return title;
   }
 
+  const getSearchCalendar = async () => {
+    await getDataSource()
+  }
+
+  const changeClassName = (e) => {
+    setValueSearch({
+      ...valueSearch,
+      class_name: e.target.value,
+    })
+  }
+
+  const changeCourseName = (e) => {
+    setValueSearch({
+      ...valueSearch,
+      course_name: e.target.value,
+    })
+  }
+
     return (
       <div className="calendar-page">
-      <h2 className="calendar-page title">
-        CALENDAR PAGE
-      </h2>
+        <Breadcrumb>
+          <Breadcrumb.Item>Admin</Breadcrumb.Item>
+          <Breadcrumb.Item>Calendar Page</Breadcrumb.Item>
+        </Breadcrumb>
+
+        <Row className="calendar-page-search">
+          <Col span={10} className="pr-4">
+          <div>Tên lớp: </div>
+          <Input value={valueSearch.class_name} onChange={changeClassName}/>
+          </Col>
+          <Col span={10} className="pr-4">
+          <div>Tên khóa học: </div>
+          <Input value={valueSearch.course_name} onChange={changeCourseName}/>
+          </Col>
+          <Col span={4} style={{textAlign: 'center'}}>
+            <Button 
+            type="primary" 
+            className="calendar-page-search__button"
+            onClick={() => getSearchCalendar()}>
+              <SearchOutlined style={{fontSize: '14px'}}/> Tìm kiếm
+            </Button>
+          </Col>
+        </Row>
+
         <FullCalendar
         headerToolbar={{
               left: 'prev,next today',
@@ -109,7 +157,6 @@ function CalendarPage() {
         datesSet={handleDate}
         events={dataSource}
         />
-
             <Modal title={getTitleShift()} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
               <div className="text-center" style={{fontSize: '16px'}}>Tổng số lớp học: <span className="font-bold">{dataEvent.total_class_room}</span></div>
               {dataEvent.courses?.map(el => {
@@ -132,7 +179,6 @@ function CalendarPage() {
               </div>
             </div>}
             </Modal>
-
       </div>
     )
 }

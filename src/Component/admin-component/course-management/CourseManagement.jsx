@@ -16,7 +16,7 @@ const layout = {
 
 function CourseManagement() {
 const [dataSource, setDataSource] = useState([]);
-const [filter, setFilter] = useState({});
+const [filter, setFilter] = useState({course_name: ''});
 const [isModalVisible, setIsModalVisible] = useState(false);
 const [isUpdate, setIsUpdate] = useState(null);
 
@@ -127,6 +127,11 @@ function updateCourse(e) {
             </Col>
               <Col span={12} className="text-right"><Button type="primary" onClick={() => setIsModalVisible(true)}>Thêm mới</Button></Col>
             </Row>
+            <div className="text-center mb-3">
+              <span className="mr-2">Tên khóa: </span>
+              <Input className="mr-2" style={{width: '200px'}} value={filter.course_name} onChange={(e) => setFilter({...filter, course_name: e.target.value})}/>
+              <Button type="primary" onClick={() => getDataCourse()}> Tìm kiếm</Button>
+            </div>
            <Table
               columns={columns}
               dataSource={dataSource}

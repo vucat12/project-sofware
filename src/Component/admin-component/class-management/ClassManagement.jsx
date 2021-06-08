@@ -1,4 +1,4 @@
-import { Form, Button, Col, Input, Row, Table, Breadcrumb, Popconfirm, Popover } from 'antd'
+import { Form, Button, Col, Input, Row, Table, Breadcrumb, Popconfirm } from 'antd'
 import Modal from 'antd/lib/modal/Modal';
 import React, { useEffect, useState } from 'react'
 import { getListClass, postNewClass, deleteClassById, updateClassById } from '../../../services/admin/classServices';
@@ -16,21 +16,20 @@ const layout = {
 
 function ClassManagement() {
 const [dataSource, setDataSource] = useState([]);
-const [filter, setFilter] = useState({});
+const [filter, setFilter] = useState({class_name: ''});
 const [isModalVisible, setIsModalVisible] = useState(false);
 const [isUpdate, setIsUpdate] = useState(null);
 
 const [form] = Form.useForm();
-const [formUpdate] = Form.useForm();
 
 useEffect(() => {
     getDataClass();
 }, []);
 
 async function getDataClass() {
-    let data = await getListClass(filter);
-    data.data.map(el => el.key = el.id)
-    setDataSource(data.data);
+  let data = await getListClass(filter);
+  data.data.map(el => el.key = el.id)
+  setDataSource(data.data);
 }
 
 async function deleteClass(event) {
@@ -102,6 +101,13 @@ function updateClass(e) {
             </Col>
               <Col span={12} className="text-right"><Button type="primary" onClick={() => {setIsModalVisible(true); setIsUpdate(null)}}>Thêm mới</Button></Col>
             </Row>
+
+            <div className="text-center mb-3">
+              <span className="mr-2">Tên lớp: </span>
+              <Input className="mr-2" style={{width: '200px'}} value={filter.class_name} onChange={(e) => setFilter({...filter, class_name: e.target.value})}/>
+              <Button type="primary" onClick={() => getDataClass()}> Tìm kiếm</Button>
+            </div>
+
            <Table
               columns={columns}
               dataSource={dataSource}

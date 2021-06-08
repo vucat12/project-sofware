@@ -8,13 +8,16 @@ export const getListCalendar = (filter) => {
     //will fix soon
         filter.fromDate = filter?.fromDate + 'T00:00:00.00Z';
         filter.toDate = filter?.toDate + 'T00:00:00.00Z';
-    
+    if(filter.class_name === '') delete filter.class_name;
+    if(filter.course_name === '') delete filter.course_name;
+
     return axios({
         method: 'get',
-        url: `${environment}/api/calendar/search?fromDate=${filter?.fromDate}&toDate=${filter?.toDate}`,
+        url: `${environment}/api/calendar/search`,
         headers: {
             Authorization: includeAuthenHeader(),
         },
+        params: filter,
     }).then(res => res.data)
 }
 

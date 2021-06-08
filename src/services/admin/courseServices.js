@@ -7,7 +7,7 @@ export const getListCourse = (filter) => {
     let data = Object.fromEntries(Object.entries(filter).filter(([_, option]) => !!option));
     return axios({
         method: 'get',
-        url: `${environment}/api/public/course/search`,
+        url: `${environment}/api/course/search`,
         headers: {
             Authorization: includeAuthenHeader(),
         },
