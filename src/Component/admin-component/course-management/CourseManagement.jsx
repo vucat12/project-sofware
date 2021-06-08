@@ -1,7 +1,7 @@
-import { Form, Button, Col, Input, Row, Table, Breadcrumb } from 'antd'
+import { Form, Button, Col, Input, Row, Table, Breadcrumb, Popconfirm } from 'antd'
 import Modal from 'antd/lib/modal/Modal';
 import React, { useEffect, useState } from 'react'
-import { getListCourse, postNewCourse } from '../../../services/admin/courseServices';
+import { deleteCourseById, getListCourse, postNewCourse, updateCourseById } from '../../../services/admin/courseServices';
 import './CourseManagement.scss';
 
 
@@ -18,6 +18,7 @@ function CourseManagement() {
 const [dataSource, setDataSource] = useState([]);
 const [filter, setFilter] = useState({});
 const [isModalVisible, setIsModalVisible] = useState(false);
+const [isUpdate, setIsUpdate] = useState(null);
 
 const [form] = Form.useForm();
 
@@ -28,6 +29,25 @@ useEffect(() => {
 async function getDataCourse() {
     let data = await getListCourse(filter);
     setDataSource(data.data);
+}
+
+async function deleteCourse(event) {
+  await deleteCourseById(event?.id);
+  getDataCourse();
+}
+
+function updateCourse(e) {
+  setIsUpdate(e.id);
+  setIsModalVisible(true);
+
+  form.setFieldsValue({
+    name: e.name,
+    credit_quantity: e.credit_quantity,
+    price_advanced: e.price_advanced,
+    price_basic: e.price_basic,
+    type_course: e.type_course,
+    description: e.description,
+  })
 }
 
     const columns = [
@@ -56,6 +76,23 @@ async function getDataCourse() {
           dataIndex: 'type_course',
           align: 'center'
         },
+        {
+          title: 'Mô tả',
+          dataIndex: 'description',
+          align: 'center'
+        },
+        {
+          title: 'Hành động',
+          render: (e) => <div>
+            <span style={{color: '#1890ff', cursor: 'pointer'}} onClick={() => updateCourse(e)}>Update</span>
+            <Popconfirm
+            className="pl-3"
+            title={`Are you sure to delete class ${e.name}`}
+            onConfirm={() => deleteCourse(e)}>
+            <a href="">Delete</a>
+            </Popconfirm>
+            </div>
+        }
       ];
 
     const handleOk = async () => {
@@ -63,13 +100,20 @@ async function getDataCourse() {
       data.credit_quantity = parseInt(data.credit_quantity);
       data.price_advanced = parseInt(data.price_advanced);
       data.price_basic = parseInt(data.price_basic);
-      await postNewCourse(data);
+
+      if(isUpdate) {
+        await updateCourseById({...data, id: isUpdate});
+      }else {
+        await postNewCourse(data);
+      }
       getDataCourse();
       setIsModalVisible(false);
     };  
 
     const handleCancel = () => {
       setIsModalVisible(false);
+      setIsUpdate(null);
+      form.resetFields();
     };
 
     return (

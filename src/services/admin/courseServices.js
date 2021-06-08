@@ -33,3 +33,61 @@ export const postNewCourse = (data) => {
           });
     });
 }
+
+export const deleteCourseById = (id) => {
+    return axios({
+        method: 'delete',
+        url: `${environment}/api/course/delete/${id}`,
+        headers: {
+            Authorization: includeAuthenHeader(),
+        },
+    })
+    .then(res => {
+        notification.open({
+            message: 'Success notification',
+            description: 'Delete Success',
+            style: {
+              width: 600,
+            },
+          });
+    })
+    .catch(err => {
+        notification.open({
+            message: 'Error notification',
+            description: err.response.data.message,
+            style: {
+              width: 600,
+            },
+          });
+    });
+}
+
+export const updateCourseById = (data) => {
+    
+    const {id, ...dataUpdate} = data;
+    return axios({
+        method: 'put',
+        url: `${environment}/api/course/update/${id}`,
+        headers: {
+            Authorization: includeAuthenHeader(),
+        },
+        data: {...dataUpdate}
+    }).then(res => {
+        notification.open({
+            message: 'success notification',
+            description: 'Update success',
+            style: {
+              width: 600,
+            },
+        });
+    })
+    .catch(err => {
+        notification.open({
+            message: 'Error notification',
+            description: err.response.data.message,
+            style: {
+              width: 600,
+            },
+        });
+    });
+}

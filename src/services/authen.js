@@ -25,7 +25,7 @@ export const checkAuthenRole = () => {
     const authen = localStorage.getItem('access_token');
     if(authen) {
         const decoded = decode(authen);
-        return decoded.role;
+        return decoded;
     }
     else return 0;
 }

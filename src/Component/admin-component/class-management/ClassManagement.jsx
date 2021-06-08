@@ -1,7 +1,7 @@
-import { Form, Button, Col, Input, Row, Table, Breadcrumb } from 'antd'
+import { Form, Button, Col, Input, Row, Table, Breadcrumb, Popconfirm, Popover } from 'antd'
 import Modal from 'antd/lib/modal/Modal';
 import React, { useEffect, useState } from 'react'
-import { getListClass, postNewClass } from '../../../services/admin/classServices';
+import { getListClass, postNewClass, deleteClassById, updateClassById } from '../../../services/admin/classServices';
 import './ClassManagement.scss';
 
 
@@ -18,8 +18,10 @@ function ClassManagement() {
 const [dataSource, setDataSource] = useState([]);
 const [filter, setFilter] = useState({});
 const [isModalVisible, setIsModalVisible] = useState(false);
+const [isUpdate, setIsUpdate] = useState(null);
 
 const [form] = Form.useForm();
+const [formUpdate] = Form.useForm();
 
 useEffect(() => {
     getDataClass();
@@ -27,7 +29,22 @@ useEffect(() => {
 
 async function getDataClass() {
     let data = await getListClass(filter);
+    data.data.map(el => el.key = el.id)
     setDataSource(data.data);
+}
+
+async function deleteClass(event) {
+  await deleteClassById(event?.id);
+  getDataClass();
+}
+
+function updateClass(e) {
+  setIsUpdate(e.id);
+  setIsModalVisible(true);
+  form.setFieldsValue({
+    name: e.name,
+    description: e.description,
+  })
 }
 
     const columns = [
@@ -41,17 +58,37 @@ async function getDataClass() {
           dataIndex: 'description',
           align: 'center'
         },
+        {
+          title: 'Hành động',
+          render: (e) => <div>
+            <span style={{color: '#1890ff', cursor: 'pointer'}} onClick={() => updateClass(e)}>Update</span>
+            <Popconfirm
+            className="pl-3"
+            title={`Are you sure to delete class ${e.name}`}
+            onConfirm={() => deleteClass(e)}>
+            <a href="">Delete</a>
+            </Popconfirm>
+            </div>
+        }
       ];
 
     const handleOk = async () => {
       let data = form.getFieldValue();
-      await postNewClass(data);
-      getDataClass();
+      if(isUpdate) {
+        await updateClassById({...data, id: isUpdate});
+        getDataClass();
+      }
+      else {
+        await postNewClass(data);
+        getDataClass();
+      }
       setIsModalVisible(false);
+      form.resetFields();
     };  
 
     const handleCancel = () => {
       setIsModalVisible(false);
+      form.resetFields();
     };
 
     return (
@@ -63,13 +100,20 @@ async function getDataClass() {
               <Breadcrumb.Item>Class Management</Breadcrumb.Item>
             </Breadcrumb>
             </Col>
-              <Col span={12} className="text-right"><Button type="primary" onClick={() => setIsModalVisible(true)}>Thêm mới</Button></Col>
+              <Col span={12} className="text-right"><Button type="primary" onClick={() => {setIsModalVisible(true); setIsUpdate(null)}}>Thêm mới</Button></Col>
             </Row>
            <Table
               columns={columns}
               dataSource={dataSource}
            />
-        <Modal className="class-management-popup" title="Thêm mới môn học" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+        <Modal 
+        className="class-management-popup" 
+        title="Thêm mới môn học" 
+        visible={isModalVisible} 
+        onOk={handleOk} 
+        onCancel={handleCancel}
+        destroyOnClose
+        >
         <Form
         form={form}
       {...layout}

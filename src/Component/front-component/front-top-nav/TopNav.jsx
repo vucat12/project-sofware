@@ -11,7 +11,6 @@ function FrontTopNav() {
   }
 
   const handleNavigation = (event) => {
-    console.log("=========", event)
     switch (event) {
       case 'sign-up-subject':
         history.push("/front/sign-up-subject")

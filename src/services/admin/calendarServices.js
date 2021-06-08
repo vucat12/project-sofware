@@ -35,24 +35,16 @@ export const getShift = () => {
         headers: {
             Authorization: includeAuthenHeader(),
         },
-    }).then(res => res.data)
+    }).then(res => res.data.data);
 }
 
-// export const postNewClass = (data) => {
-//     return axios({
-//         method: 'post',
-//         url: `${environment}/api/add-new-class`,
-//         headers: {
-//             Authorization: includeAuthenHeader(),
-//         },
-//         data: {...data}
-//     }).catch(err => {
-//         notification.open({
-//             message: 'Error notification',
-//             description: err.response.data.message,
-//             style: {
-//               width: 600,
-//             },
-//           });
-//     });
-// }
+export const getClassByShift = (data) => {
+    return axios({
+        method: 'get',
+        url: `${environment}/api/calendar/shift`,
+        headers: {
+            Authorization: includeAuthenHeader(),
+        },
+        params: data,
+    }).then(res => res.data);
+}

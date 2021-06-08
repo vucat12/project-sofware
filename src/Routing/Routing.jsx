@@ -20,32 +20,32 @@ const history = useHistory();
 
     useEffect(() => {
 
-        if(!checkAuthenRole()) history.push("/login")
-        if(checkAuthenRole() === "ADMIN") history.push("/admin/home")
-        if(checkAuthenRole() === "USER") console.log("==USER==")
+        if(!checkAuthenRole().role) history.push("/login")
+        if(checkAuthenRole().role === "ADMIN") history.push("/admin/home")
+        if(checkAuthenRole().role === "USER") history.push("/front/sign-up-subject")
 
     }, []);
 
     return (
-        <div>
+        <div style={{backgroundColor: '#FFF'}}>
  {/* this is admin page */}
             <Switch>
 
-            {checkAuthenRole() === "USER" && 
-                <div>
+            {checkAuthenRole().role === "USER" && 
+                <div className="center-page">
                     <FrontTopNav/>
-                    <div className="center-page">
+                    <div className="pl-2 pr-2">
                         <Route path="/front/sign-up-subject"><SignUpSubject/></Route>
                     </div>
                 </div>            
             }
 
-            {!checkAuthenRole()  && 
+            {!checkAuthenRole().role  && 
             <Route path="/login">
                     <LogIn/>
             </Route>}
 
-            { checkAuthenRole() === "ADMIN" && 
+            { checkAuthenRole().role === "ADMIN" && 
                 <div className="root">
                     <div className="root-left">
                     <SideBar/>
