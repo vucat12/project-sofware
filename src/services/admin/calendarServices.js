@@ -31,16 +31,6 @@ export const getCalendarById = (id) => {
     }).then(res => res.data)
 }
 
-export const getShift = () => {
-    return axios({
-        method: 'get',
-        url: `${environment}/api/shift/all`,
-        headers: {
-            Authorization: includeAuthenHeader(),
-        },
-    }).then(res => res.data.data);
-}
-
 export const getClassByShift = (data) => {
     return axios({
         method: 'get',

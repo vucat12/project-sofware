@@ -16,7 +16,7 @@ export const getListOpenCourse = () => {
 export const postNewOpenCourse = (data) => {
     return axios({
         method: 'post',
-        url: `${environment}/api/add-new-course`,
+        url: `${environment}/api/open-course`,
         headers: {
             Authorization: includeAuthenHeader(),
         },

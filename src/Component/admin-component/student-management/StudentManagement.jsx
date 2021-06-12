@@ -74,8 +74,9 @@ function StudentManagement() {
 
   async function getDataStudents() {
     let dataTable = await getListStudents(filter);
-    dataTable.data.contents.map(el => el.key = el.id);
-    setDataSource(dataTable.data.contents);
+    console.log(dataTable)
+    dataTable.data.map(el => el.key = el.id);
+    setDataSource(dataTable.data);
   }
 
   const getDetailStudent = (data) => {

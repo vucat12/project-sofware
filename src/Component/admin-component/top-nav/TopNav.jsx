@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Menu } from 'antd';
 import './TopNav.scss';
+import { getClass, getCourse, getLecturer, getSemester, getShift } from '../../../services/admin/commonServices';
 
 function TopNav() {
+
+  useEffect(() => {
+    getShift()
+    getClass();
+    getCourse();
+    getLecturer()
+    getSemester();
+  })
+
   const handleLogout = () => {
     localStorage.removeItem("access_token");
     window.location.pathname = "/login";

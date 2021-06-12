@@ -3,7 +3,7 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { getCalendarById, getClassByShift, getListCalendar, getShift } from '../../../services/admin/calendarServices';
+import { getCalendarById, getClassByShift, getListCalendar } from '../../../services/admin/calendarServices';
 import moment from 'moment';
 import Modal from 'antd/lib/modal/Modal';
 import { Breadcrumb, Button, Col, Input, Row } from 'antd';
@@ -11,6 +11,7 @@ import './CalendarPage.scss';
 import {
   SearchOutlined
 } from '@ant-design/icons';
+import { read_cookie } from '../../../services/admin/commonServices';
 
 let filter = {
   fromDate: '',
@@ -27,14 +28,15 @@ function CalendarPage() {
   const [valueSearch, setValueSearch] = useState({class_name: '', course_name: ''});
 
   useEffect(() => {
-    getShift().then(res => {setDataShifts(res)})
+    setDataShifts(read_cookie('getShift'))
+
   }, []);
 
   const handleEventClick = (event) => {
-    let shift = `SHIFT_${dataShifts.indexOf(event.event.extendedProps.shifts) + 1}`;
+    let shift = dataShifts.filter(el => el.name==event.event.extendedProps.shifts)
     getClassByShift({
       date: moment(event.event.start).format("YYYY-MM-DD")+'T00:00:00.00Z', 
-      shift: shift
+      shift: shift[0].code,
     }).then(res => {
       setDataEvent(res.data);
       setIsModalVisible(true);
@@ -91,9 +93,9 @@ function CalendarPage() {
 
   function getTitleShift() {
     let title= '';
-    dataShifts.forEach((el, index) => {
-      if(dataEvent.shift?.indexOf(index+1) > 0) {
-        title=el;
+    dataShifts.forEach((el) => {
+      if(el.code===dataEvent?.shift) {
+        title = el.name;
         return title;
       }
     })

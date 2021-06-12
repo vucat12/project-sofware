@@ -1,9 +1,9 @@
-import { Form, Button, Col, Input, Row, Table, Breadcrumb } from 'antd'
+import { Form, Button, Col, Input, Row, Table, Breadcrumb, Select } from 'antd'
 import Modal from 'antd/lib/modal/Modal';
 import React, { useEffect, useState } from 'react'
+import { read_cookie } from '../../../services/admin/commonServices';
 import { getListOpenCourse, postNewOpenCourse } from '../../../services/admin/openCourseServices';
 import './OpenCourse.scss';
-
 
 const layout = {
   labelCol: {
@@ -13,22 +13,29 @@ const layout = {
     span: 18,
   },
 };
+const { Option } = Select;
+
+const dataShifts = read_cookie('getShift');
+const dataClasses = read_cookie('getClass');
+const dataCourses = read_cookie('getCourse');
+const dataLecturer = read_cookie('getLecturer');
+const dataSemesters = read_cookie('getSemester');
 
 function OpenCourse() {
-const [dataSource, setDataSource] = useState([]);
-const [filter, setFilter] = useState({});
-const [isModalVisible, setIsModalVisible] = useState(false);
+  const [dataSource, setDataSource] = useState([]);
+  const [filter, setFilter] = useState({});
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
-const [form] = Form.useForm();
+  const [form] = Form.useForm();
 
-useEffect(() => {
-    getDataOpenCourse();
-}, []);
+  useEffect(() => {
+      getDataOpenCourse();
+  }, []);
 
-async function getDataOpenCourse() {
-    let data = await getListOpenCourse(filter);
-    setDataSource(data.data);
-}
+  async function getDataOpenCourse() {
+      let data = await getListOpenCourse(filter);
+      setDataSource(data.data);
+  }
 
     const columns = [
         {
@@ -70,7 +77,9 @@ async function getDataOpenCourse() {
 
     const handleOk = async () => {
       let data = form.getFieldValue();
-      await postNewOpenCourse(data);
+
+      console.log("====", data);
+      // await postNewOpenCourse(data);
       getDataOpenCourse();
       setIsModalVisible(false);
     };  
@@ -94,53 +103,101 @@ async function getDataOpenCourse() {
               columns={columns}
               dataSource={dataSource}
            />
-        <Modal className="open-course-popup" title="Thêm mới môn học" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+        <Modal 
+        width={600}
+        className="open-course-popup" 
+        title="Thêm mới môn học" 
+        visible={isModalVisible} 
+        onOk={handleOk} 
+        onCancel={handleCancel}
+        forceRender>
         <Form
         form={form}
       {...layout}
       name="basic">
       <Form.Item
-        label="Tên môn học"
-        name="name"
-        rules={[{ required: true, message: 'Tên môn học là bắt buộc' }]}
+        label="Chọn lớp"
+        name="class_id"
+        rules={[{ required: true }]}
+      >
+        <Select>
+          {dataClasses?.map(el => {
+            return <Option value={el.id}>{el.name}</Option>
+          })}
+        </Select>
+      </Form.Item>
+      <Form.Item
+        label="Chọn môn học"
+        name="course_id"
+        rules={[{ required: true }]}
+      >
+        <Select>
+          {dataCourses?.map(el => {
+            return <Option value={el.id}>{el.name}</Option>
+          })}
+        </Select>
+      </Form.Item>
+      <Form.Item
+        label="Ngày trong tuần"
+        name="day_of_week"
+        rules={[{ required: true }]}
+      >
+         <Select>
+            <Option value="MONDAY">Thứ 2</Option>
+            <Option value="TUESDAY">Thứ 3</Option>
+            <Option value="WEDNESDAY">Thứ 4</Option>
+            <Option value="THURSDAY">Thứ 5</Option>
+            <Option value="FRIDAY">Thứ 6</Option>
+            <Option value="SATURDAY">Thứ 7</Option>
+            <Option value="SUNDAY">Chủ nhật</Option>
+        </Select>
+      </Form.Item>
+      <Form.Item
+        label="Tên giảng viên"
+        name="lecturer_id"
+        rules={[{ required: true }]}
+      >
+        <Select>
+          {dataLecturer?.map(el => {
+            return <Option value={el.id}>{el.full_name}</Option>
+          })}
+        </Select>
+      </Form.Item>
+      <Form.Item
+        label="Số sinh viên tối đa"
+        name="max_quantity_student"
+        rules={[{ required: true }]}
       >
         <Input />
       </Form.Item>
       <Form.Item
-        label="Số tín chỉ"
-        name="credit_quantity"
-        rules={[{ required: true, message: 'Số tín chỉ là bắt buộc' }]}
+        label="Học kỳ"
+        name="semester_id"
+        rules={[{ required: true }]}
       >
-        <Input type="number" />
+        <Select>
+          {dataSemesters?.map(el => {
+            return <Option value={el.id}>{el.name}</Option>
+          })}
+        </Select>
       </Form.Item>
+
+
       <Form.Item
-        label="Giá cơ bản"
-        name="price_basic"
-        rules={[{ required: true, message: 'Giá cơ bản là bắt buộc' }]}
+        label="Ca"
+        name="shifts"
+        rules={[{ required: true, message: 'Ca là bắt buộc' }]}
       >
-        <Input type="number" />
+        <Select
+        mode="multiple"
+        >
+          {dataShifts?.map(el => {
+            return <Option value={el.code}>{el.name}</Option>
+          })}
+        </Select>
       </Form.Item>
-      <Form.Item
-        label="Giá khuyến mãi"
-        name="price_advanced"
-        rules={[{ required: true, message: 'Giá khuyến mãi là bắt buộc' }]}
-      >
-        <Input type="number" />
-      </Form.Item>
-      <Form.Item
-        label="Mô tả"
-        name="description"
-        rules={[{ required: true, message: 'Mô tả là bắt buộc' }]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        label="Loại khóa học"
-        name="type_course"
-        rules={[{ required: true, message: 'Loại khóa học là bắt buộc' }]}
-      >
-        <Input />
-      </Form.Item>
+
+
           </Form>
         </Modal>
       </div>
