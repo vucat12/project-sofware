@@ -4,6 +4,9 @@ import React, { useEffect, useState } from 'react'
 import { read_cookie } from '../../../services/admin/commonServices';
 import { getListOpenCourse, postNewOpenCourse } from '../../../services/admin/openCourseServices';
 import './OpenCourse.scss';
+import {
+  SearchOutlined
+} from '@ant-design/icons';
 
 const layout = {
   labelCol: {
@@ -29,179 +32,203 @@ function OpenCourse() {
   const [form] = Form.useForm();
 
   useEffect(() => {
-      getDataOpenCourse();
+    getDataOpenCourse();
   }, []);
 
   async function getDataOpenCourse() {
-      let data = await getListOpenCourse(filter);
-      setDataSource(data.data);
+    let data = await getListOpenCourse(filter);
+    setDataSource(data.data);
   }
 
-    const columns = [
-        {
-          title: 'Tên lớp',
-          dataIndex: 'class_name',
-          align: 'center'
-        },
-        {
-          title: 'Tên khóa học',
-          dataIndex: 'course_name',
-          align: 'center'
-        },
-        {
-          title: 'Ngày học',
-          dataIndex: 'day_of_week',
-          align: 'center'
-        },
-        {
-          title: 'Tên giảng viên',
-          dataIndex: 'lecturer_name',
-          align: 'center'
-        },
-        {
-          title: 'Số lượng sinh viên tối đa',
-          dataIndex: 'max_quantity_student',
-          align: 'center'
-        },
-        {
-          title: 'Học kỳ',
-          dataIndex: 'semester',
-          align: 'center'
-        },
-        {
-          title: 'Học kỳ',
-          dataIndex: 'shifts',
-          align: 'center',
-        },
-      ];
+  const columns = [
+    {
+      title: 'Tên lớp',
+      dataIndex: 'class_name',
+      align: 'center'
+    },
+    {
+      title: 'Tên khóa học',
+      dataIndex: 'course_name',
+      align: 'center'
+    },
+    {
+      title: 'Ngày học',
+      dataIndex: 'day_of_week',
+      align: 'center'
+    },
+    {
+      title: 'Tên giảng viên',
+      dataIndex: 'lecturer_name',
+      align: 'center'
+    },
+    {
+      title: 'Số lượng sinh viên tối đa',
+      dataIndex: 'max_quantity_student',
+      align: 'center'
+    },
+    {
+      title: 'Học kỳ',
+      dataIndex: 'semester',
+      align: 'center'
+    },
+    {
+      title: 'Học kỳ',
+      dataIndex: 'shifts',
+      align: 'center',
+    },
+  ];
 
-    const handleOk = async () => {
-      let data = form.getFieldValue();
+  const handleOk = async () => {
+    let data = form.getFieldValue();
 
-      console.log("====", data);
-      // await postNewOpenCourse(data);
-      getDataOpenCourse();
-      setIsModalVisible(false);
-    };  
+    console.log("====", data);
+    // await postNewOpenCourse(data);
+    getDataOpenCourse();
+    setIsModalVisible(false);
+  };
 
-    const handleCancel = () => {
-      setIsModalVisible(false);
-    };
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
-    return (
-        <div className="open-course">
-            <Row className="open-course-header">
-            <Col span={12} className="align-center">
-            <Breadcrumb>
-              <Breadcrumb.Item>Admin</Breadcrumb.Item>
-              <Breadcrumb.Item>Open Course</Breadcrumb.Item>
-            </Breadcrumb>
-            </Col>
-              <Col span={12} className="text-right"><Button type="primary" onClick={() => setIsModalVisible(true)}>Thêm mới</Button></Col>
-            </Row>
-           <Table
-              columns={columns}
-              dataSource={dataSource}
-           />
-        <Modal 
+  return (
+    <div className="open-course">
+      <Row className="pt-3 pb-3">
+        <Col span={24} className="align-center">
+          <Breadcrumb className="breadcrumb">
+            <Breadcrumb.Item>Đăng Ký Mở Lớp</Breadcrumb.Item>
+          </Breadcrumb>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={12} className="align-center">
+          <Input className="mr-2" placeholder="Tìm kiếm..." />
+        </Col>
+        <Col span={4} style={{ textAlign: 'center' }}>
+          <Button
+            type="primary"
+            className="button-green calendar-page-search__button"
+          >
+            <SearchOutlined style={{ fontSize: '14px' }} /> Tìm kiếm
+          </Button>
+        </Col>
+        <Col offset={2} span={3} className="text-right" style={{ marginRight: '14px' }}>
+          <div>
+            <Select className="select" defaultValue="DESC" >
+              <Option value="ASC">Tăng Dần</Option>
+              <Option value="DESC">Giảm Dần</Option>
+            </Select>
+          </div>
+        </Col>
+        <Col span={2} className="text-right">
+          <Button type="primary" className="button-green"
+            onClick={() => setIsModalVisible(true)}>Thêm mới</Button>
+        </Col>
+      </Row>
+      <Table
+        className="table"
+        columns={columns}
+        dataSource={dataSource}
+      />
+      <Modal
         width={600}
-        className="open-course-popup" 
-        title="Thêm mới môn học" 
-        visible={isModalVisible} 
-        onOk={handleOk} 
+        className="open-course-popup"
+        title="Thêm mới môn học"
+        visible={isModalVisible}
+        onOk={handleOk}
         onCancel={handleCancel}
         forceRender>
         <Form
-        form={form}
-      {...layout}
-      name="basic">
-      <Form.Item
-        label="Chọn lớp"
-        name="class_id"
-        rules={[{ required: true }]}
-      >
-        <Select>
-          {dataClasses?.map(el => {
-            return <Option value={el.id}>{el.name}</Option>
-          })}
-        </Select>
-      </Form.Item>
-      <Form.Item
-        label="Chọn môn học"
-        name="course_id"
-        rules={[{ required: true }]}
-      >
-        <Select>
-          {dataCourses?.map(el => {
-            return <Option value={el.id}>{el.name}</Option>
-          })}
-        </Select>
-      </Form.Item>
-      <Form.Item
-        label="Ngày trong tuần"
-        name="day_of_week"
-        rules={[{ required: true }]}
-      >
-         <Select>
-            <Option value="MONDAY">Thứ 2</Option>
-            <Option value="TUESDAY">Thứ 3</Option>
-            <Option value="WEDNESDAY">Thứ 4</Option>
-            <Option value="THURSDAY">Thứ 5</Option>
-            <Option value="FRIDAY">Thứ 6</Option>
-            <Option value="SATURDAY">Thứ 7</Option>
-            <Option value="SUNDAY">Chủ nhật</Option>
-        </Select>
-      </Form.Item>
-      <Form.Item
-        label="Tên giảng viên"
-        name="lecturer_id"
-        rules={[{ required: true }]}
-      >
-        <Select>
-          {dataLecturer?.map(el => {
-            return <Option value={el.id}>{el.full_name}</Option>
-          })}
-        </Select>
-      </Form.Item>
-      <Form.Item
-        label="Số sinh viên tối đa"
-        name="max_quantity_student"
-        rules={[{ required: true }]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        label="Học kỳ"
-        name="semester_id"
-        rules={[{ required: true }]}
-      >
-        <Select>
-          {dataSemesters?.map(el => {
-            return <Option value={el.id}>{el.name}</Option>
-          })}
-        </Select>
-      </Form.Item>
+          form={form}
+          {...layout}
+          name="basic">
+          <Form.Item
+            label="Chọn lớp"
+            name="class_id"
+            rules={[{ required: true }]}
+          >
+            <Select>
+              {dataClasses?.map(el => {
+                return <Option value={el.id}>{el.name}</Option>
+              })}
+            </Select>
+          </Form.Item>
+          <Form.Item
+            label="Chọn môn học"
+            name="course_id"
+            rules={[{ required: true }]}
+          >
+            <Select>
+              {dataCourses?.map(el => {
+                return <Option value={el.id}>{el.name}</Option>
+              })}
+            </Select>
+          </Form.Item>
+          <Form.Item
+            label="Ngày trong tuần"
+            name="day_of_week"
+            rules={[{ required: true }]}
+          >
+            <Select>
+              <Option value="MONDAY">Thứ 2</Option>
+              <Option value="TUESDAY">Thứ 3</Option>
+              <Option value="WEDNESDAY">Thứ 4</Option>
+              <Option value="THURSDAY">Thứ 5</Option>
+              <Option value="FRIDAY">Thứ 6</Option>
+              <Option value="SATURDAY">Thứ 7</Option>
+              <Option value="SUNDAY">Chủ nhật</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item
+            label="Tên giảng viên"
+            name="lecturer_id"
+            rules={[{ required: true }]}
+          >
+            <Select>
+              {dataLecturer?.map(el => {
+                return <Option value={el.id}>{el.full_name}</Option>
+              })}
+            </Select>
+          </Form.Item>
+          <Form.Item
+            label="Số sinh viên tối đa"
+            name="max_quantity_student"
+            rules={[{ required: true }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Học kỳ"
+            name="semester_id"
+            rules={[{ required: true }]}
+          >
+            <Select>
+              {dataSemesters?.map(el => {
+                return <Option value={el.id}>{el.name}</Option>
+              })}
+            </Select>
+          </Form.Item>
 
 
-      <Form.Item
-        label="Ca"
-        name="shifts"
-        rules={[{ required: true, message: 'Ca là bắt buộc' }]}
-      >
-        <Select
-        mode="multiple"
-        >
-          {dataShifts?.map(el => {
-            return <Option value={el.code}>{el.name}</Option>
-          })}
-        </Select>
-      </Form.Item>
+          <Form.Item
+            label="Ca"
+            name="shifts"
+            rules={[{ required: true, message: 'Ca là bắt buộc' }]}
+          >
+            <Select
+              mode="multiple"
+            >
+              {dataShifts?.map(el => {
+                return <Option value={el.code}>{el.name}</Option>
+              })}
+            </Select>
+          </Form.Item>
 
 
-          </Form>
-        </Modal>
-      </div>
-    )
+        </Form>
+      </Modal>
+    </div>
+  )
 }
 
 export default OpenCourse

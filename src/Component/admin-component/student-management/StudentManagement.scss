@@ -1,4 +1,15 @@
+@import "./../../../common/variable.scss";
+
 .student-management {
+    background-color: $color-white;
+    border-radius: 10px;
+    padding: 25px 22px;
+    .breadcrumb {
+        font-size: 2rem;
+    }
+    .table {
+        margin-top: 30px;
+    }
     &-popup {
         .ant-row {
             padding: 8px 0;

@@ -3,19 +3,20 @@
     flex-direction: row;
     overflow: hidden;
     &-left {
-
     }
     &-right {
+        z-index: 10;
         min-height: 100vh;
         width: 100%;
+        position: relative;
         &_content {
             padding: 35px;
-            background-color: #F1F3F6;
+            background-color: transparent;
         }
     }
 }
 
 .center-page {
-    border: 1px solid #D7D7DA;
+    border: 1px solid #d7d7da;
     margin: 0 7%;
 }

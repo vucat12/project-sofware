@@ -1,4 +1,15 @@
+@import "./../../../common/variable.scss";
+
 .calendar-page {
+    background-color: $color-white;
+    border-radius: 10px;
+    padding: 25px 22px;
+    .breadcrumb {
+        font-size: 2rem;
+    }
+    .fc-view-harness-active {
+        height: 800px !important;
+    }
     .fc-event-time {
         display: none !important;
     }
@@ -6,16 +17,52 @@
         font-size: 22px;
     }
     .styleEvent {
+        color: $color-white;
+        text-align: center;
         .fc-event-title {
             text-overflow: ellipsis;
         }
+        .fc-daygrid-event-dot {
+            display: none;
+        }
+    }
+    .fc-scroller {
+        overflow: unset !important;
     }
     &-search {
         padding: 20px 20%;
         &__button {
             margin-top: 21.6px;
-            
         }
     }
-    
+    .shift-1 {
+        background-color: $shift-1;
+    }
+    .shift-2 {
+        background-color: $shift-2;
+    }
+    .shift-3 {
+        background-color: $shift-3;
+    }
+    .shift-4 {
+        background-color: $shift-4;
+    }
+    .shift-5 {
+        background-color: $shift-5;
+    }
+    .shift-6 {
+        background-color: $shift-6;
+    }
+    .shift-7 {
+        background-color: $shift-7;
+    }
+    .shift-8 {
+        background-color: $shift-8;
+    }
+    .shift-9 {
+        background-color: $shift-9;
+    }
+    .shift-10 {
+        background-color: $shift-10;
+    }
 }

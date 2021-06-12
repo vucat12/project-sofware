@@ -1,0 +1,33 @@
+@import "./common/variable.scss";
+.button-green {
+    background-color: $color-blue-light !important;
+    color: $color-white !important;
+    border-color: $color-blue-light !important;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 12%);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 5%);
+    margin: 0px !important;
+    transition: all 0.3s;
+    &:hover {
+        transform: scale(1.05);
+    }
+    &:active {
+        transform: scale(1);
+    }
+}
+.select {
+    width: 100% !important;
+}
+.icon-edit {
+    color: $color-blue-light !important;
+    transition: all 0.3;
+    &:hover {
+        transform: scale(1.1);
+    }
+}
+.icon-delete {
+    color: $color-red !important;
+    transition: all 0.3;
+    &:hover {
+        transform: scale(1.1);
+    }
+}

@@ -25,7 +25,7 @@ function CalendarPage() {
   const [dataEvent, setDataEvent] = useState({});
   const [dataShifts, setDataShifts] = useState([]);
   const [dataClass, setDataClass] = useState({});
-  const [valueSearch, setValueSearch] = useState({class_name: '', course_name: ''});
+  const [valueSearch, setValueSearch] = useState({ class_name: '', course_name: '' });
 
   useEffect(() => {
     setDataShifts(read_cookie('getShift'))
@@ -33,9 +33,9 @@ function CalendarPage() {
   }, []);
 
   const handleEventClick = (event) => {
-    let shift = dataShifts.filter(el => el.name==event.event.extendedProps.shifts)
+    let shift = dataShifts.filter(el => el.name == event.event.extendedProps.shifts)
     getClassByShift({
-      date: moment(event.event.start).format("YYYY-MM-DD")+'T00:00:00.00Z', 
+      date: moment(event.event.start).format("YYYY-MM-DD") + 'T00:00:00.00Z',
       shift: shift[0].code,
     }).then(res => {
       setDataEvent(res.data);
@@ -61,28 +61,29 @@ function CalendarPage() {
   }
 
   async function getDataSource() {
-    let data = await getListCalendar({...filter, ...valueSearch});
-    let arr = data.data.map((el, index ,final) => {
+    let data = await getListCalendar({ ...filter, ...valueSearch });
+    let arr = data.data.map((el, index, final) => {
       let count = 1;
-      for (let i = index+1; i < final.length; i++) {
-        if (el.start === final[i].start && el.end === final[i].end && el.shifts=== final[i].shifts)
-        count++;
+      for (let i = index + 1; i < final.length; i++) {
+        if (el.start === final[i].start && el.end === final[i].end && el.shifts === final[i].shifts)
+          count++;
       }
-      return {...el, count: count};
+      return { ...el, count: count };
     })
     let arrNew = [];
     arr.forEach((el, index) => {
       let checkLoop = 0;
       arrNew.forEach(element => {
-        if(element.shifts === el.shifts && element.start === el.start && element.end===el.end) checkLoop++;
+        if (element.shifts === el.shifts && element.start === el.start && element.end === el.end) checkLoop++;
       })
-      if (checkLoop===0) arrNew.push({...el})
+      if (checkLoop === 0) arrNew.push({ ...el })
     })
 
     data.data = arrNew.map(el => {
       let start = moment(el.start).format("YYYY-MM-DDTHH:mm:ss");
       let end = moment(el.end).format("YYYY-MM-DDTHH:mm:ss");
-      return {...el, start: start, end: end, title: el.shifts+ ': ' + el.count + ' Lớp', classNames: ['styleEvent']}
+      let id_shift = el.shifts.slice(3, el.shifts.lastIndexOf('('));
+      return { ...el, start: start, end: end, title: el.shifts + ': ' + el.count + ' Lớp', classNames: ['styleEvent', 'shift-' + id_shift] }
     })
     setDataSource(data.data)
   }
@@ -92,9 +93,9 @@ function CalendarPage() {
   }
 
   function getTitleShift() {
-    let title= '';
+    let title = '';
     dataShifts.forEach((el) => {
-      if(el.code===dataEvent?.shift) {
+      if (el.code === dataEvent?.shift) {
         title = el.name;
         return title;
       }
@@ -120,69 +121,71 @@ function CalendarPage() {
     })
   }
 
-    return (
-      <div className="calendar-page">
-        <Breadcrumb>
-          <Breadcrumb.Item>Admin</Breadcrumb.Item>
-          <Breadcrumb.Item>Calendar Page</Breadcrumb.Item>
-        </Breadcrumb>
-
-        <Row className="calendar-page-search">
-          <Col span={10} className="pr-4">
+  return (
+    <div className="calendar-page">
+      <Breadcrumb className="breadcrumb">
+        <Breadcrumb.Item>Lịch làm việc</Breadcrumb.Item>
+        {/*<Breadcrumb.Item>Calendar Page</Breadcrumb.Item> */}
+      </Breadcrumb>
+      <Row className="calendar-page-search">
+        <Col span={10} className="pr-4">
           <div>Tên lớp: </div>
-          <Input value={valueSearch.class_name} onChange={changeClassName}/>
-          </Col>
-          <Col span={10} className="pr-4">
+          <Input value={valueSearch.class_name} onChange={changeClassName} />
+        </Col>
+        <Col span={10} className="pr-4">
           <div>Tên khóa học: </div>
-          <Input value={valueSearch.course_name} onChange={changeCourseName}/>
-          </Col>
-          <Col span={4} style={{textAlign: 'center'}}>
-            <Button 
-            type="primary" 
-            className="calendar-page-search__button"
+          <Input value={valueSearch.course_name} onChange={changeCourseName} />
+        </Col>
+        <Col span={4} style={{
+          textAlign: 'center', display: 'flex',
+          alignItems: 'flex-end'
+        }}>
+          <Button
+            type="primary"
+            className="button-green calendar-page-search__button"
             onClick={() => getSearchCalendar()}>
-              <SearchOutlined style={{fontSize: '14px'}}/> Tìm kiếm
-            </Button>
-          </Col>
-        </Row>
+            <SearchOutlined style={{ fontSize: '14px' }} /> Tìm kiếm
+          </Button>
+        </Col>
+      </Row>
 
-        <FullCalendar
+      <FullCalendar
         headerToolbar={{
-              left: 'prev,next today',
-              center: 'title',
-              right: 'dayGridMonth,timeGridWeek,timeGridDay'
-            }}
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        }}
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
         className="calendar-page-detail"
         eventClick={handleEventClick}
         datesSet={handleDate}
         events={dataSource}
-        />
-            <Modal title={getTitleShift()} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-              <div className="text-center" style={{fontSize: '16px'}}>Tổng số lớp học: <span className="font-bold">{dataEvent.total_class_room}</span></div>
-              {dataEvent.courses?.map(el => {
-                return (<div className="mt-3 text-center">Phòng học: <span className="font-bold">{el.class_room}</span>
-                <Button onClick={() => viewDetailClass(el.id_course)} className="ml-3" style={{height: '30px'}}>Xem chi tiết</Button>
-                </div>)
-              })}
-            {!!Object.keys(dataClass).length && <div className="text-center pt-2">
-              <div>
-                Phòng học: <span className="font-bold">{dataClass.class_room}</span>
-              </div>
-              <div>
-                Môn: <span className="font-bold">{dataClass.course}</span>
-              </div>
-              <div>
-                Bắt đầu: <span className="font-bold">{dataClass.start}</span>
-              </div>
-              <div>
-                Kết thúc: <span className="font-bold">{dataClass.end}</span>
-              </div>
-            </div>}
-            </Modal>
-      </div>
-    )
+      />
+      <Modal title={getTitleShift()} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+        <div className="text-center" style={{ fontSize: '16px' }}>Tổng số lớp học: <span className="font-bold">{dataEvent.total_class_room}</span></div>
+        {dataEvent.courses?.map(el => {
+          return (<div className="mt-3 text-center">Phòng học: <span className="font-bold">{el.class_room}</span>
+            <Button onClick={() => viewDetailClass(el.id_course)} className="ml-3" style={{ height: '30px' }}>Xem chi tiết</Button>
+          </div>)
+        })}
+        {!!Object.keys(dataClass).length && <div className="text-center pt-2">
+          <div>
+            Phòng học: <span className="font-bold">{dataClass.class_room}</span>
+          </div>
+          <div>
+            Môn: <span className="font-bold">{dataClass.course}</span>
+          </div>
+          <div>
+            Bắt đầu: <span className="font-bold">{dataClass.start}</span>
+          </div>
+          <div>
+            Kết thúc: <span className="font-bold">{dataClass.end}</span>
+          </div>
+        </div>}
+      </Modal>
+    </div>
+  )
 }
 
 export default CalendarPage

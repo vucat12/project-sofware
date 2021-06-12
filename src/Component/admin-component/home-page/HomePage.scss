@@ -1,0 +1,32 @@
+@import "./../../../common/variable.scss";
+
+.home-page {
+    background-color: $color-white;
+    border-radius: 10px;
+    padding: 25px 22px;
+    .card {
+        border-radius: 10px;
+        margin: 0 5px;
+        font-size: 20px;
+        font-weight: 600;
+        .title-tag {
+            span {
+                font-size: 10px;
+            }
+        }
+    }
+    .date-wrapper {
+        text-align: center;
+        margin: 30px 0 50px 0;
+        .date-current {
+            font-size: 70px;
+        }
+        .hello {
+            margin-top: 10px;
+            span {
+                font-size: 25px;
+                padding: 8px 16px;
+            }
+        }
+    }
+}

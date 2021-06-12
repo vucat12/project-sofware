@@ -1,13 +1,20 @@
+@import "./../../../common/variable.scss";
+$url: "./../../../assets/";
+
 .side-bar {
     height: 100%;
     &-title {
         width: 100%;
         .home {
-            height: 38px;
+            height: 100px;
             font-weight: bold;
             font-size: 20px;
             text-align: center;
-            background: rgba(0, 0, 0, 0.3);
+            background-image: url($url + "logo_manage_course.png");
+            background-color: $color-white;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
         }
         .btn-collapsed {
             display: inline-block;
@@ -17,15 +24,46 @@
         }
     }
     &-collapsed {
-        min-width: 120px !important;
+        min-width: 140px !important;
     }
-
+    .ant-menu {
+        padding: 0 20px;
+    }
     .ant-menu-dark {
         height: 100%;
+        background-color: $color-white !important;
+        color: $color-blue-dark !important;
+        li {
+            color: $color-blue-dark;
+            a,
+            span {
+                color: $color-blue-dark !important;
+            }
+            &:hover {
+                color: $color-blue-dark !important;
+                background-color: $color-white-purple !important;
+            }
+        }
+        .ant-menu-inline.ant-menu-sub {
+            background-color: $color-white-purple;
+            .ant-menu-item:hover {
+                color: $color-blue-dark !important;
+                background-color: $color-white !important;
+            }
+        }
+    }
+    .ant-menu-submenu-active {
+        background-color: $color-white !important;
+        color: $color-blue-dark;
     }
 
     .ant-menu-inline {
         min-width: 240px !important;
     }
-
+    .ant-menu-item {
+        margin: 0px !important;
+        &-selected {
+            background-color: $color-blue-light !important;
+        }
+    }
 }
