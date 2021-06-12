@@ -17,7 +17,6 @@ const title = (content, tag, color) => (
     </Row>
 );
 const getDayOfWeek = (current_day) => {
-    console.log(current_day);
     switch (current_day) {
         case 0:
             return "Sunday";

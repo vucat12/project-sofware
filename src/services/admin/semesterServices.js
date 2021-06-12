@@ -33,3 +33,60 @@ export const postNewSemester = (data) => {
           });
     });
 }
+
+export const deleteSemesterById = (id) => {
+    return axios({
+        method: 'delete',
+        url: `${environment}/api/semester/delete/${id}`,
+        headers: {
+            Authorization: includeAuthenHeader(),
+        },
+    })
+    .then(res => {
+        notification.open({
+            message: 'Success notification',
+            description: 'Delete Success',
+            style: {
+              width: 600,
+            },
+          });
+    })
+    .catch(err => {
+        notification.open({
+            message: 'Error notification',
+            description: err.response.data.message,
+            style: {
+              width: 600,
+            },
+          });
+    });
+}
+
+export const updateSemesterById = (data) => {
+    
+    return axios({
+        method: 'put',
+        url: `${environment}/api/semester/update/${data.id}`,
+        headers: {
+            Authorization: includeAuthenHeader(),
+        },
+        data: data
+    }).then(res => {
+        notification.open({
+            message: 'success notification',
+            description: 'Update success',
+            style: {
+              width: 600,
+            },
+        });
+    })
+    .catch(err => {
+        notification.open({
+            message: 'Error notification',
+            description: err.response.data.message,
+            style: {
+              width: 600,
+            },
+        });
+    });
+}

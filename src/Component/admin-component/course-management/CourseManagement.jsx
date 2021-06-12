@@ -64,17 +64,29 @@ function CourseManagement() {
     {
       title: 'Tín chỉ',
       dataIndex: 'credit_quantity',
-      align: 'center'
+      align: 'center',
+      sorter: {
+        compare: (a, b) => a.credit_quantity - b.credit_quantity,
+        multiple: 10,
+      },
     },
     {
       title: 'Giá tín chỉ',
       dataIndex: 'price_advanced',
-      align: 'center'
+      align: 'center',
+      sorter: {
+        compare: (a, b) => a.price_advanced - b.price_advanced,
+        multiple: 10,
+      },
     },
     {
       title: 'Giá tín chỉ học lại',
       dataIndex: 'price_basic',
-      align: 'center'
+      align: 'center',
+      sorter: {
+        compare: (a, b) => a.price_basic - b.price_basic,
+        multiple: 10,
+      },
     },
     {
       title: 'Loại',
@@ -145,12 +157,6 @@ function CourseManagement() {
           </Button>
         </Col>
         <Col offset={2} span={3} className="text-right" style={{ marginRight: '14px' }}>
-          <div>
-            <Select className="select" defaultValue="DESC" >
-              <Option value="ASC">Tăng Dần</Option>
-              <Option value="DESC">Giảm Dần</Option>
-            </Select>
-          </div>
         </Col>
         <Col span={2} className="text-right">
           <Button type="primary" className="button-green"

@@ -43,12 +43,20 @@ function StudentManagement() {
     {
       title: 'Tín chỉ đã học',
       dataIndex: 'credit_quantity_experienced',
-      align: 'center'
+      align: 'center',
+      sorter: {
+        compare: (a, b) => a.credit_quantity_experienced - b.credit_quantity_experienced,
+        multiple: 10,
+      },
     },
     {
       title: 'Tín chỉ đang thực hiện',
       dataIndex: 'credit_quantity_present',
-      align: 'center'
+      align: 'center',
+      sorter: {
+        compare: (a, b) => a.credit_quantity_present - b.credit_quantity_present,
+        multiple: 10,
+      },
     },
     {
       title: 'Trạng thái học phí',
@@ -70,13 +78,8 @@ function StudentManagement() {
     getDataStudents()
   }, []);
 
-  useEffect(() => {
-    getDataStudents(); // This is be executed when the state changes
-  }, [filter]);
-
   async function getDataStudents() {
     let dataTable = await getListStudents(filter);
-    console.log(dataTable)
     dataTable.data.map(el => el.key = el.id);
     setDataSource(dataTable.data);
   }
@@ -96,10 +99,6 @@ function StudentManagement() {
     setIsModalVisible(false);
   };
 
-  function handleChange(value) {
-    setFilter({ ...filter, sort_direction: value });
-  }
-
   return (
     <div className="student-management">
       <Row className="pt-3 pb-3">
@@ -111,23 +110,16 @@ function StudentManagement() {
       </Row>
       <Row>
         <Col span={12} className="align-center">
-          <Input placeholder="Tìm kiếm..." />
+          <Input placeholder="Tìm kiếm..." onChange={(e) => {setFilter({...filter, full_name: e.target.value})}}/>
         </Col>
         <Col span={4} style={{ textAlign: 'center' }}>
           <Button
             type="primary"
             className="button-green calendar-page-search__button"
+            onClick={() => getDataStudents()}
           >
             <SearchOutlined style={{ fontSize: '14px' }} /> Tìm kiếm
           </Button>
-        </Col>
-        <Col offset={5} span={3} className="text-right">
-          <div>
-            <Select className="select" defaultValue="DESC" style={{ width: 120 }} onChange={handleChange}>
-              <Option value="ASC">Tăng Dần</Option>
-              <Option value="DESC">Giảm Dần</Option>
-            </Select>
-          </div>
         </Col>
       </Row>
       <Table

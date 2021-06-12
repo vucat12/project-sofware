@@ -1,11 +1,11 @@
 import {
-  SearchOutlined
+  DeleteOutlined, EditOutlined, SearchOutlined
 } from '@ant-design/icons';
-import { Breadcrumb, Button, Col, DatePicker, Form, Input, Row, Select, Table } from 'antd';
+import { Breadcrumb, Button, Col, DatePicker, Form, Input, Popconfirm, Row, Select, Table } from 'antd';
 import Modal from 'antd/lib/modal/Modal';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { getListSemester, postNewSemester } from '../../../services/admin/semesterServices';
+import { deleteSemesterById, getListSemester, postNewSemester, updateSemesterById } from '../../../services/admin/semesterServices';
 import './SemesterManagement.scss';
 
 
@@ -22,8 +22,10 @@ const layout = {
 
 function SemesterManagement() {
   const [dataSource, setDataSource] = useState([]);
-  const [filter, setFilter] = useState({ status: 'OPEN' });
+  const [filter, setFilter] = useState({ status: 'OPEN', search: '' });
   const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const [isUpdate, setIsUpdate] = useState(null);
 
   const [form] = Form.useForm();
 
@@ -51,30 +53,72 @@ function SemesterManagement() {
       title: 'Thời gian bắt đầu',
       dataIndex: 'from_date',
       align: 'center',
-      render: (from) => <span>{moment(from).format("DD/MM/YYYY")}</span>
+      render: (from) => <span>{moment(from).format("DD/MM/YYYY")}</span>,
+      sorter: {
+        compare: (a, b) => a.from_date - b.from_date,
+        multiple: 10,
+      },
     },
     {
       title: 'Thời gian kết thúc',
       dataIndex: 'to_date',
       align: 'center',
-      render: (to) => <span>{moment(to).format("DD/MM/YYYY")}</span>
+      render: (to) => <span>{moment(to).format("DD/MM/YYYY")}</span>,
+      sorter: {
+        compare: (a, b) => a.to_date - b.to_date,
+        multiple: 10,
+      },
     },
+    {
+      title: 'Hành động',
+      render: (e) => <div>
+        <span style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => updateSemester(e)}><EditOutlined className="icon-edit" /></span>
+        <Popconfirm
+          className="pl-3"
+          title={`Are you sure to delete class ${e.name}`}
+          onConfirm={() => deleteSemester(e)}>
+          <a href=""><DeleteOutlined className="icon-delete" /></a>
+        </Popconfirm>
+      </div>
+    }
   ];
+
+  async function deleteSemester(event) {
+    await deleteSemesterById(event?.id);
+    getDataSemester();
+  }
+
+  function updateSemester(e) {
+    setIsUpdate(e.id);
+    setIsModalVisible(true);
+    form.setFieldsValue({
+      name: e.name,
+      from_date: moment(e.from_date),
+      to_date: moment(e.to_date),
+    })
+  }
+
 
   const handleOk = async () => {
     let data = form.getFieldValue();
     data = {
-      ...data,
+      ...data, 
       from_date: moment(data.from_date._d).format("YYYY-MM-DD") + 'T00:00:00Z',
       to_date: moment(data.to_date._d).format("YYYY-MM-DD") + 'T00:00:00Z',
     }
-    await postNewSemester(data);
+
+    if(isUpdate) await updateSemesterById({id: isUpdate, name: data.name}) 
+    else await postNewSemester(data);
+
     getDataSemester();
     setIsModalVisible(false);
+    setIsUpdate(null);
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
+    setIsUpdate(null);
+    form.resetFields();
   };
 
   function handleStatus(value) {
@@ -92,20 +136,10 @@ function SemesterManagement() {
       </Row>
       <Row>
         <Col span={12} className="align-center">
-          <Input className="mr-2" placeholder="Tìm kiếm..." />
-        </Col>
-        <Col span={4} style={{ textAlign: 'center' }}>
-          <Button
-            type="primary"
-            className="button-green calendar-page-search__button"
-
-            onClick={() => getDataSemester()}
-          >
-            <SearchOutlined style={{ fontSize: '14px' }} /> Tìm kiếm
-          </Button>
+          <Input className="mr-2" placeholder="Tìm kiếm..." onChange={(e) => setFilter({...filter, search: e.target.value })}/>
         </Col>
         <Col span={2} style={{ height: '100%', display: 'flex' }}>
-          <span className="mr-2">Trạng thái: </span>
+          <span className="ml-2 mt-1">Trạng thái: </span>
         </Col>
         <Col span={2} className="text-right" style={{ marginRight: '14px' }}>
           <div>
@@ -115,6 +149,15 @@ function SemesterManagement() {
               <Option value="CLOSED">CLOSED</Option>
             </Select>
           </div>
+        </Col>
+         <Col span={4} style={{ textAlign: 'center' }}>
+          <Button
+            type="primary"
+            className="button-green calendar-page-search__button"
+            onClick={() => getDataSemester()}
+          >
+            <SearchOutlined style={{ fontSize: '14px' }} /> Tìm kiếm
+          </Button>
         </Col>
         <Col span={2} className="text-right">
           <Button type="primary" className="button-green"
