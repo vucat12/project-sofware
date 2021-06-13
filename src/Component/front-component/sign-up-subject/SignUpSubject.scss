@@ -1,13 +1,60 @@
+@import "./../../../common/variable.scss";
+
 .sign-up {
+    padding: 0 20px;
     &-title {
         text-transform: uppercase;
         text-align: center;
         font-weight: bold;
-        color: #0A579F;
+        color: #0a579f;
     }
     &-class {
-        color: #5DB5E9;
+        color: #5db5e9;
         font-size: 16px;
         font-weight: bold;
+    }
+    .button-green {
+        padding: 6px 10px !important;
+        margin: 10px 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        font-size: 12px;
+        cursor: pointer !important;
+        &:hover {
+            padding: 6px 10px !important;
+            transform: scale(1) !important;
+            color: $color-blue-dark !important;
+        }
+    }
+    .collapse {
+        background-color: transparent;
+        border: 0px;
+        border-bottom: 0;
+        border-radius: 0;
+        .ant-collapse-header {
+            border-bottom: 1px solid #eee;
+            color: $color-blue-light !important;
+            font-weight: 500;
+        }
+        .ant-collapse-item {
+            border-bottom: 0px;
+        }
+        .ant-collapse-content {
+            border-top: 0px;
+            & > .ant-collapse-content-box {
+                padding: 0px;
+            }
+        }
+        .title {
+            font-size: 25px;
+            font-weight: 800;
+        }
+        &__content-wrapper {
+            padding: 20px;
+            border: 1px solid #eee;
+            background-color: $color-white;
+        }
+    }
+    .table {
     }
 }

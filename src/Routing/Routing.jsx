@@ -28,16 +28,17 @@ function Routing() {
     }, []);
 
     return (
-        <div style={{ backgroundColor: '#FFF' }}>
+        <div className="root-wrapper">
             {/* this is admin page */}
             <Switch>
-
                 {checkAuthenRole().role === "USER" &&
                     <div className="center-page">
                         <FrontTopNav />
                         <div className="pl-2 pr-2">
                             <Route path="/front/sign-up-subject"><SignUpSubject /></Route>
                         </div>
+                        <div className="separator"></div>
+                        <Footer />
                     </div>
                 }
 

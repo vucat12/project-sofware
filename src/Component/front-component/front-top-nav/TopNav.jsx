@@ -15,23 +15,36 @@ function FrontTopNav() {
       case 'sign-up-subject':
         history.push("/front/sign-up-subject")
         break;
-    
+
       default:
         break;
     }
   }
 
-    return (
+  return (
+    <div className="nav-wrapper">
+      <div className="banner">
+      </div>
       <Menu mode="horizontal" className="front-top-nav">
-          <Menu.Item key="sign-up-subject" className="front-top-nav_subject align-center">
-            <span className="font-bold" onClick={() => handleNavigation('sign-up-subject')}>Đăng ký học phần</span>
-          </Menu.Item>
+        <Menu.Item key="sign-up-subject" className="front-top-nav_subject align-center">
+          <span className="font-bold" onClick={() => handleNavigation('sign-up-subject')}>Đăng ký học phần</span>
+        </Menu.Item>
 
-          <Menu.Item key="user" className="front-top-nav_user align-center">
-          <span className="font-bold" type="primary" onClick={()=> handleLogout()}>Log Out</span>
-          </Menu.Item>
+        <Menu.Item key="payment-tuition" className="front-top-nav_subject align-center">
+          <span className="font-bold" onClick={() => handleNavigation('sign-up-subject')}>Thanh Toán Học Phí</span>
+        </Menu.Item>
+
+        <Menu.Item key="profile" className="front-top-nav_subject align-center">
+          <span className="font-bold" onClick={() => handleNavigation('sign-up-subject')}>Thông Tin Cá Nhân</span>
+        </Menu.Item>
+
+        <Menu.Item key="user" className="front-top-nav_user align-center">
+          <span className="font-bold" type="primary" onClick={() => handleLogout()}>Log Out</span>
+        </Menu.Item>
       </Menu>
-    )
+    </div>
+
+  )
 }
 
 export default FrontTopNav
