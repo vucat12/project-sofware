@@ -53,3 +53,34 @@ export const registerOpenCourse = (data) => {
           });
     })
 }
+
+export const deleteOpenCourse = (data) => {
+    const customData = {
+        list: data
+    }
+
+    return axios({
+        method: 'delete',
+        url: `${environment}/api/open-course/current/delete`,
+        headers: {
+            Authorization: includeAuthenHeader(),
+        },
+        data: customData,
+    }).then(res => {
+        notification.open({
+        message: 'Success notification',
+        description: 'Xóa thành công',
+        style: {
+          width: 600,
+        },
+      });})
+    .catch(err => {
+        notification.open({
+            message: 'Error notification',
+            description: err.response.data.message,
+            style: {
+              width: 600,
+            },
+          });
+    })
+}
