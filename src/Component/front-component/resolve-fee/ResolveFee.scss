@@ -1,0 +1,27 @@
+@import "./../../../common/variable.scss";
+
+.resolve-fee {
+    &-head {
+        text-transform: uppercase;
+        text-align: center;
+        font-weight: bold;
+        color: #0a579f;
+    }
+    &-title {
+        font-size: 17px;
+        font-weight: bold;
+        border-bottom: 1px solid #e5e5e5;
+        line-height: 1.5em;
+    }
+    &-table {
+        padding-top: 16px;
+        table, th, td {
+            border: 1px solid #ddd;
+            border-collapse: collapse;
+        }
+        td {
+            padding: 8px;
+            width: 50%;
+        }
+    }
+}

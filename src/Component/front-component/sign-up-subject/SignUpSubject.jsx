@@ -41,8 +41,8 @@ function SignUpSubject() {
     const [dataSource, setDataSource] = useState([]);
     const [dataMyClass, setDataMyClass] = useState([]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-
     const [selectedRowMyClass, setSelectedRowMyClass] = useState([]);
+    const [detailInformation, setDetailInformation] = useState({});
 
     const onSelectChange = (selectedRowKeys) => {
         setSelectedRowKeys(selectedRowKeys)
@@ -53,10 +53,20 @@ function SignUpSubject() {
     }
 
     const deleteMyClass = async () => {
+      if(selectedRowMyClass.length <=0) {
+        notification.open({
+          message: 'Error notification',
+          description: "Bạn phải chọn môn để xóa !",
+          style: {
+            width: 600,
+          },
+        });
+      } else {
       await deleteOpenCourse(selectedRowMyClass);
       getDataMyOpenCourse();
       getDataOpenCourse();
       setSelectedRowMyClass([]);
+      }
     }
 
     const signUp = async () => {
@@ -84,12 +94,15 @@ function SignUpSubject() {
 
     const getDataMyOpenCourse = async () => {
       let res = await getMyOpenCourse();
+
+      setDetailInformation({total_fee: res.data.total_fee, total_credit: res.data.total_credit})
+
       res.data.list.map(el => el.key = el.id)
       setDataMyClass(res.data.list);
     }
 
     const getCheckbox = (record) => ({
-        disabled: record.is_disable
+        disabled: record.is_disable || record.current_quantity_student === record.max_quantity_student
     })
 
     useEffect(() => {
@@ -128,11 +141,11 @@ function SignUpSubject() {
               <div className="sign-up-infomation__name">
                 <p>
                   <span>Tổng số tín chỉ đã đăng ký:</span>
-                  <span className="font-bold font-italic"> 13 </span>
+                  <span className="font-bold font-italic"> {detailInformation.total_credit} </span>
                 </p>
                 <p>
                   <span>Học Phí Tạm Tính:</span>
-                  <span className="font-bold font-italic"> 5.000.000VNĐ</span>
+                  <span className="font-bold font-italic"> {detailInformation.total_fee}</span>
                 </p>
               </div>
             </div>

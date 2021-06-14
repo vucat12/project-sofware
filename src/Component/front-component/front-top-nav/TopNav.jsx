@@ -15,6 +15,10 @@ function FrontTopNav() {
       case 'sign-up-subject':
         history.push("/front/sign-up-subject")
         break;
+      
+      case 'resolve-fee':
+        history.push("/front/resolve-fee")
+        break;
 
       default:
         break;
@@ -31,7 +35,7 @@ function FrontTopNav() {
         </Menu.Item>
 
         <Menu.Item key="payment-tuition" className="front-top-nav_subject align-center">
-          <span className="font-bold" onClick={() => handleNavigation('sign-up-subject')}>Thanh Toán Học Phí</span>
+          <span className="font-bold" onClick={() => handleNavigation('resolve-fee')}>Thanh Toán Học Phí</span>
         </Menu.Item>
 
         <Menu.Item key="profile" className="front-top-nav_subject align-center">

@@ -16,6 +16,7 @@ import ClassManagement from '../Component/admin-component/class-management/Class
 import FrontTopNav from '../Component/front-component/front-top-nav/TopNav';
 import SignUpSubject from '../Component/front-component/sign-up-subject/SignUpSubject';
 import LecturerManagement from '../Component/admin-component/lecturer-management/LecturerManagement'
+import ResolveFee from '../Component/front-component/resolve-fee/ResolveFee'
 
 function Routing() {
     const history = useHistory();
@@ -37,6 +38,7 @@ function Routing() {
                         <FrontTopNav />
                         <div className="pl-2 pr-2">
                             <Route path="/front/sign-up-subject"><SignUpSubject /></Route>
+                            <Route path="/front/resolve-fee"><ResolveFee /></Route>
                         </div>
                         <div className="separator"></div>
                         <Footer />
@@ -46,7 +48,8 @@ function Routing() {
                 {!checkAuthenRole().role &&
                     <Route path="/login">
                         <LogIn />
-                    </Route>}
+                    </Route>
+                }
 
                 {checkAuthenRole().role === "ADMIN" &&
                     <div className="root">
