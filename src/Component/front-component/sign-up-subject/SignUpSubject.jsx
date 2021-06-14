@@ -2,46 +2,69 @@ import { Button, Table } from 'antd';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { checkAuthenRole } from '../../../services/authen';
+import { getMyOpenCourse, getOpenCourseSearch, registerOpenCourse } from '../../../services/front-page/openCourseServices';
 import './SignUpSubject.scss';
 
 const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
+      title: 'Lớp',
+      dataIndex: 'class_name',
     },
     {
-      title: 'Age',
-      dataIndex: 'age',
+      title: 'Tên môn học',
+      dataIndex: 'course_name',
     },
     {
-      title: 'Address',
-      dataIndex: 'address',
+      title: 'Tên giảng viên',
+      dataIndex: 'lecturer_name',
     },
+    {
+      title: 'Số tín chỉ',
+      dataIndex: 'credit_quantity',
+    },
+    {
+      title: 'Số sinh viên đã đăng ký',
+      dataIndex: 'current_quantity_student',
+    },
+    {
+      title: 'Số sinh viên tối đa',
+      dataIndex: 'max_quantity_student',
+    },
+    
   ];
   
-  const dataSource = [];
-  for (let i = 0; i < 46; i++) {
-    dataSource.push({
-      key: i,
-      name: `Edward King ${i}`,
-      age: 32,
-      address: `London, Park Lane no. ${i}`,
-    });
-  }
-
-
 function SignUpSubject() {
+    const informationUser = checkAuthenRole();
+    const [dataSource, setDataSource] = useState([]);
+    const [dataMyClass, setDataMyClass] = useState([]);
+
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const onSelectChange = (selectedRowKeys) => {
         setSelectedRowKeys(selectedRowKeys)
     }
     const signUp = () => {
+      registerOpenCourse(selectedRowKeys);
         setSelectedRowKeys([])
     }
-    const informationUser = checkAuthenRole();
+
+    async function getDataOpenCourse() {
+      let res = await getOpenCourseSearch();
+      res.data.map(el => el.key = el.id);
+      setDataSource(res.data);
+    }
+
+    const getDataMyOpenCorse = async () => {
+      let res = await getMyOpenCourse();
+      setDataMyClass(res.data.list);
+    }
+
+    const getCheckbox = (record) => ({
+        disabled: record.is_disable
+    })
 
     useEffect(() => {
-      console.log("======", informationUser);
+      getDataOpenCourse();
+      getDataMyOpenCorse();
     }, [])
 
     return (
@@ -61,16 +84,16 @@ function SignUpSubject() {
                 Lớp đã đăng ký
             </div>
             <ol>
-                <li>Nhập môn lập trình</li>
-                <li>Đại số tuyến tính</li>
-                <li>Giải tích</li>
+                {dataMyClass.map(el => {
+                  return <li>{el.course_name}</li>
+                })}
             </ol>
             <h4 className="sign-up-title pt-2">
                 danh sách lớp học đang mở
             </h4>
 
     <Button type="default" onClick={() => signUp()}>Đăng ký</Button>
-    <Table rowSelection={{selectedRowKeys, onChange: onSelectChange}} columns={columns} dataSource={dataSource} />
+    <Table className="sign-up-table" rowSelection={{selectedRowKeys, onChange: onSelectChange, getCheckboxProps: getCheckbox}} columns={columns} dataSource={dataSource} />
 
         </div>
     )

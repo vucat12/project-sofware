@@ -15,6 +15,7 @@ import OpenCourse from '../Component/admin-component/open-course/OpenCourse';
 import ClassManagement from '../Component/admin-component/class-management/ClassManagement';
 import FrontTopNav from '../Component/front-component/front-top-nav/TopNav';
 import SignUpSubject from '../Component/front-component/sign-up-subject/SignUpSubject';
+import LecturerManagement from '../Component/admin-component/lecturer-management/LecturerManagement'
 
 function Routing() {
     const history = useHistory();
@@ -61,6 +62,7 @@ function Routing() {
                                 <Route path="/admin/semester-management"><SemesterManagement /></Route>
                                 <Route path="/admin/open-course"><OpenCourse /></Route>
                                 <Route path="/admin/class-management"><ClassManagement /></Route>
+                                <Route path="/admin/lecturer-management"><LecturerManagement/></Route>
                             </div>
                             <Footer />
                         </div>

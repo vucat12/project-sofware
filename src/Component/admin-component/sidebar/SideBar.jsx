@@ -45,7 +45,11 @@ function SideBar() {
               Sinh Viên
             </Link>
           </Menu.Item>
-          <Menu.Item key="4">Giảng Viên</Menu.Item>
+          <Menu.Item key="4">
+            <Link to="/admin/lecturer-management">
+              Giảng Viên
+            </Link>
+            </Menu.Item>
         </SubMenu>
         <Menu.Item key="5" icon={<ReadOutlined />}>
           <Link to="/admin/course-management">

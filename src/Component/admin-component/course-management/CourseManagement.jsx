@@ -1,14 +1,11 @@
 import {
   DeleteOutlined, EditOutlined, SearchOutlined
 } from '@ant-design/icons';
-import { Breadcrumb, Button, Col, Form, Input, Popconfirm, Row, Select, Table } from 'antd';
+import { Breadcrumb, Button, Col, Form, Input, Popconfirm, Row, Table } from 'antd';
 import Modal from 'antd/lib/modal/Modal';
 import React, { useEffect, useState } from 'react';
 import { deleteCourseById, getListCourse, postNewCourse, updateCourseById } from '../../../services/admin/courseServices';
 import './CourseManagement.scss';
-
-
-const { Option } = Select;
 
 const layout = {
   labelCol: {
