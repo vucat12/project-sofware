@@ -1,27 +1,19 @@
-import { Modal, Button, Input, Form, DatePicker, InputNumber } from 'antd';
+import { Modal, Button, InputNumber } from 'antd';
 import moment from 'moment';
 import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { checkAuthenRole } from '../../../services/authen';
-import { getStudentFee, postFeePayment, updateProfile } from '../../../services/front-page/resolveFeeServices';
+import { getStudentFee, postFeePayment } from '../../../services/front-page/resolveFeeServices';
 import './ResolveFee.scss';
 
 
-const formItemLayout = {
-    labelCol: { span: 5 },
-    wrapperCol: { span: 19 },
-  };
-    
-
 function ResolveFee() {
-    const [informationUser, setInformationUser] = useState(checkAuthenRole());
+    const informationUser = checkAuthenRole();
     const [informationFee, setInformationFee] = useState([]);
-    const [isVisible, setIsVisible] = useState(false);
 
     let data;
 
-    const [form] = Form.useForm();
     const { confirm } = Modal;
 
     async function getStudentDetailFee() {
@@ -64,35 +56,6 @@ function ResolveFee() {
       
     }
 
-    const confirmUpdateStudent = () => {
-        const {code, ...dataProfile} = form.getFieldValue();
-        const isEmpty = !Object.values(dataProfile).every(x => !!x);
-        if(isEmpty) {
-            form.validateFields()
-        } else {
-            dataProfile.date_of_birth = moment(dataProfile.date_of_birth).format("YYYY-MM-DD") + 'T00:00:00.000Z';
-            updateProfile(dataProfile).then(res => {
-                if(res.status === 200) {
-                    setInformationUser(form.getFieldsValue())
-                }
-            });
-            setIsVisible(false);
-        }
-
-        
-    }
-
-    const editProfile = () => {
-        form.setFieldsValue({
-            full_name: informationUser.full_name,
-            code: informationUser.code,
-            date_of_birth: moment(informationUser.date_of_birth),
-            faculty: informationUser.faculty,
-            training_system: informationUser.training_system
-        }) 
-        setIsVisible(true);
-    }
-
     useEffect(() => {
         getStudentDetailFee();
     }, []);
@@ -102,9 +65,6 @@ function ResolveFee() {
     <h3 className="resolve-fee-head pt-2">Thông tin học phí</h3>
     <div className="resolve-fee-title">
         <span>Thông tin sinh viên</span>
-        <div className="resolve-fee-title__edit">
-            <Button type="link" onClick={() => editProfile()}>Chỉnh sửa thông tin</Button>
-        </div>
     </div>
     <div className="resolve-fee-table">
         <table style={{width: '100%'}}>
@@ -176,52 +136,6 @@ function ResolveFee() {
         </div>
     ))}
     </div>
-    <Modal 
-    forceRender
-    centered
-    title="Basic Modal" 
-    visible={isVisible} 
-    onOk={confirmUpdateStudent} 
-    onCancel={() => setIsVisible(false)}>
-        <Form className="resolve-fee-modal" form={form} name="dynamic_rule">
-            <Form.Item {...formItemLayout}
-                name="full_name"
-                label="Họ và tên"
-                rules={[{ required: true, message: 'Họ và tên là bắt buộc!' }]}
-            >
-                <Input placeholder="Please input your name" />
-            </Form.Item>
-            <Form.Item {...formItemLayout}
-                name="code"
-                label="MSSV"
-            >
-                <Input placeholder="Please input your nickname" disabled/>
-            </Form.Item>
-            <Form.Item {...formItemLayout}
-                name="date_of_birth"
-                label="Ngày sinh"
-                rules={[{ required: true, message: 'Ngày sinh là bắt buộc!' }]}
-            >
-                <DatePicker placeholder="Please input your nickname" />
-            </Form.Item>
-            <Form.Item {...formItemLayout}
-                name="faculty"
-                label="Khoa"
-                rules={[{ required: true, message: 'Khoa là bắt buộc!' }]}
-            >
-                <Input placeholder="Please input your nickname" />
-            </Form.Item>
-            <Form.Item {...formItemLayout}
-                name="training_system"
-                label="Hệ đào tạo"
-                rules={[{ required: true, message: 'Hệ đào tạo là bắt buộc!' }]}
-            >
-                <Input placeholder="Please input your nickname" />
-            </Form.Item>
-        </Form>
-    </Modal>
-
-
     </div>
   )
 }

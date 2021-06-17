@@ -17,6 +17,7 @@ import FrontTopNav from '../Component/front-component/front-top-nav/TopNav';
 import SignUpSubject from '../Component/front-component/sign-up-subject/SignUpSubject';
 import LecturerManagement from '../Component/admin-component/lecturer-management/LecturerManagement'
 import ResolveFee from '../Component/front-component/resolve-fee/ResolveFee'
+import EditProfile from '../Component/front-component/edit-profile/EditProfile'
 
 function Routing() {
     const history = useHistory();
@@ -39,6 +40,7 @@ function Routing() {
                         <div className="pl-2 pr-2">
                             <Route path="/front/sign-up-subject"><SignUpSubject /></Route>
                             <Route path="/front/resolve-fee"><ResolveFee /></Route>
+                            <Route path="/edit-profile"><EditProfile/></Route>
                         </div>
                         <div className="separator"></div>
                         <Footer />

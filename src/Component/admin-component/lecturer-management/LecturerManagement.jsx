@@ -33,7 +33,6 @@ import {
     async function getDataLecturers() {
       let dataTable = await getListLecturers(filter);
       
-        console.log(dataTable);
       dataTable.data.data.map(el => el.key = el.id);
       setDataSource(dataTable.data.data);
     }

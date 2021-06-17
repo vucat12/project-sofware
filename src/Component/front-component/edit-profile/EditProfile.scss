@@ -1,0 +1,65 @@
+@import "./../../../common/variable.scss";
+
+.edit-profile {
+    &-head {
+        text-transform: uppercase;
+        text-align: center;
+        font-weight: bold;
+        color: #B94A48;
+        font-size: 30px;
+    }
+    &-fee-title {
+        text-transform: uppercase;
+        text-align: center;
+        font-weight: bold;
+        color: #0a579f;
+        border-bottom: 1px solid rgb(185, 74, 72);
+    }
+    &-title {
+        font-size: 17px;
+        font-weight: bold;
+        border-bottom: 1px solid #e5e5e5;
+        line-height: 1.5em;
+        &__edit {
+            text-align: right;
+            display: inline-block;
+            float: right;
+            button {
+                font-weight: bold;
+            }
+        }
+    }
+    &-table {
+        padding-top: 16px;
+        table, th, td {
+            border: 1px solid #ddd;
+            border-collapse: collapse;
+        }
+        td {
+            padding: 8px;
+            width: 50%;
+        }
+    }
+    &-money {
+        padding-top: 16px;
+        table, th, td {
+            border: 1px solid #ddd;
+            border-collapse: collapse;
+        }
+        tr {
+            td {
+                padding: 8px;
+                &:first-child {
+                    width: 25%;
+                }
+            }    
+        }
+    }
+
+
+    &-total {
+
+    }
+
+    
+}

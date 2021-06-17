@@ -13,14 +13,16 @@ export const getStudentFee = () => {
     }).then(res => res.data)
 }
 
-export const getStudentFeeTotal = () => {
-    return axios({
+export const getStudentFeeTotal = async () => {
+    let data;
+    await axios({
         method: 'get',
         url: `${environment}/api/student/total-fee/token`,
         headers: {
             Authorization: includeAuthenHeader(),
         },
-    }).then(res => res.data)
+    }).then(res => data = res.data)
+    return data.data;
 }
 
 export const postFeePayment = (data) => {
@@ -71,10 +73,20 @@ export const updateProfile = (data) => {
     }).catch(err => {
         notification.open({
             message: 'Error notification',
-            description: err.response.data.message,
+            description: "Chỉnh sửa lỗi",
             style: {
               width: 600,
             },
           });
     })
+}
+
+export const getCalendarList = () => {
+    return axios({
+        method: 'get',
+        url: `${environment}/api/student/timetable/token`,
+        headers: {
+            Authorization: includeAuthenHeader(),
+        },
+    }).then(res => res.data)
 }
