@@ -35,7 +35,7 @@ const columns = [
     },
     
   ];
-  
+
 function SignUpSubject() {
     const informationUser = checkAuthenRole();
     const [dataSource, setDataSource] = useState([]);
@@ -135,7 +135,7 @@ function SignUpSubject() {
             <h4 className="sign-up-title mt-2 mb-2">
               Danh sách lớp học đã đăng ký
             </h4>
-            <Table bordered pagination={false} rowSelection={{ selectedRowMyClass, onChange: onSelectMyClass }} columns={columns} dataSource={dataMyClass} />
+            <Table bordered pagination={false} rowSelection={{ selectedRowKeys: selectedRowMyClass, onChange: onSelectMyClass }} columns={columns} dataSource={dataMyClass} />
             <Button type="primary" className="button-green" onClick={() => deleteMyClass()}>Xóa Lớp Đã Chọn</Button>
             <div className="sign-up-information">
               <div className="sign-up-infomation__name">
@@ -158,7 +158,7 @@ function SignUpSubject() {
       <Button type="primary" className="button-green" onClick={() => signUp()}>Đăng ký</Button>
       <Table className="table sign-up-table"
         pagination={false}
-        rowSelection={{ selectedRowKeys, onChange: onSelectChange, getCheckboxProps: getCheckbox }}
+        rowSelection={{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange, getCheckboxProps: getCheckbox }}
         columns={columns}
         dataSource={dataSource}
         size='small'

@@ -3,50 +3,47 @@ import { includeAuthenHeader } from "../authen"
 import { environment } from "../environment"
 import { notification } from 'antd';
 
-export const getOpenCourseSearch = () => {
+export const getStudentFee = () => {
     return axios({
         method: 'get',
-        url: `${environment}/api/open-course/current/search`,
+        url: `${environment}/api/student/fee/token`,
         headers: {
             Authorization: includeAuthenHeader(),
         },
     }).then(res => res.data)
 }
 
-export const getMyOpenCourse = () => {
+export const getStudentFeeTotal = () => {
     return axios({
         method: 'get',
-        url: `${environment}/api/my-open-course/current/token`,
+        url: `${environment}/api/student/total-fee/token`,
         headers: {
             Authorization: includeAuthenHeader(),
         },
     }).then(res => res.data)
 }
 
-export const registerOpenCourse = (data) => {
-    const customData = {
-        list: data
-    }
-
+export const postFeePayment = (data) => {
     return axios({
         method: 'post',
-        url: `${environment}/api/open-course/current/register`,
+        url: `${environment}/api/student/fee/payment/token`,
         headers: {
             Authorization: includeAuthenHeader(),
         },
-        data: customData,
+        data: data,
     }).then(res => {
         notification.open({
-        message: 'Success notification',
-        description: 'Đăng ký thành công',
-        style: {
-          width: 600,
-        },
-      });})
-    .catch(err => {
+            message: 'Success notification',
+            description: 'Thanh toán thành công',
+            style: {
+              width: 600,
+            },
+          });
+        return res;
+    }).catch(err => {
         notification.open({
             message: 'Error notification',
-            description: err.response.data.message,
+            description: "Không nhập tiền mà đòi đóng học phí!",
             style: {
               width: 600,
             },
@@ -54,28 +51,24 @@ export const registerOpenCourse = (data) => {
     })
 }
 
-export const deleteOpenCourse = (data) => {
-    const customData = {
-        list: data
-    }
-
+export const updateProfile = (data) => {
     return axios({
-        method: 'delete',
-        url: `${environment}/api/open-course/current/delete`,
+        method: 'put',
+        url: `${environment}/api/student/update`,
         headers: {
             Authorization: includeAuthenHeader(),
         },
-        data: customData,
+        data: data,
     }).then(res => {
         notification.open({
-        message: 'Success notification',
-        description: 'Xóa thành công',
-        style: {
-          width: 600,
-        },
-      });
-    })
-    .catch(err => {
+            message: 'Success notification',
+            description: 'Chỉnh sửa thành công',
+            style: {
+              width: 600,
+            },
+          });
+        return res;
+    }).catch(err => {
         notification.open({
             message: 'Error notification',
             description: err.response.data.message,

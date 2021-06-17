@@ -12,6 +12,14 @@
         font-weight: bold;
         border-bottom: 1px solid #e5e5e5;
         line-height: 1.5em;
+        &__edit {
+            text-align: right;
+            display: inline-block;
+            float: right;
+            button {
+                font-weight: bold;
+            }
+        }
     }
     &-table {
         padding-top: 16px;
@@ -23,5 +31,23 @@
             padding: 8px;
             width: 50%;
         }
+    }
+    &-money {
+        padding-top: 16px;
+        table, th, td {
+            border: 1px solid #ddd;
+            border-collapse: collapse;
+        }
+        tr {
+            td {
+                padding: 8px;
+                &:first-child {
+                    width: 25%;
+                }
+            }    
+        }
+    }
+    &-modal {
+        
     }
 }
