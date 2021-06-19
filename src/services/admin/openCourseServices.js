@@ -22,6 +22,14 @@ export const postNewOpenCourse = (data) => {
             Authorization: includeAuthenHeader(),
         },
         data: {...data}
+    }).then(res=> {
+        notification.open({
+            message: 'Success notification',
+            description: 'Delete Success',
+            style: {
+              width: 600,
+            },
+          });
     }).catch(err => {
         notification.open({
             message: 'Error notification',

@@ -23,3 +23,13 @@ export const getStudentById = (id) => {
         },
     }).then(res => res.data)
 }
+
+export const getStudentCourse = (semesterId, id) => {
+    return axios({
+        method: `get`,
+        url: `${environment}/api/student/course/${id}?semester_id=${semesterId}`,
+        headers: {
+            Authorization: includeAuthenHeader(),
+        },
+    }).then(res =>res.data)
+}

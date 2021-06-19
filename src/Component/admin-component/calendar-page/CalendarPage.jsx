@@ -150,6 +150,9 @@ function CalendarPage() {
       </Row>
 
       <FullCalendar
+
+        dayMaxEvents={true}
+        
         headerToolbar={{
           left: 'prev,next today',
           center: 'title',

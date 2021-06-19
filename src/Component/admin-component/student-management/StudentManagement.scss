@@ -15,4 +15,13 @@
             padding: 8px 0;
         }
     }
+    &-modal {
+        display: flex;
+        &__profile {
+            width: 35%;
+        }
+        &__information {
+            width: 65%;
+        }
+    }
 }

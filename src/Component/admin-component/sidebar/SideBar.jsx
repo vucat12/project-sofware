@@ -72,6 +72,23 @@ function SideBar() {
           </Link>
         </Menu.Item>
       </Menu>
+
+
+      {/* <SubMenu key="sub3" icon={<UsergroupAddOutlined />} title="Quản Lý Học Phí">
+          <Menu.Item key="9">
+            <Link to="/admin/tuition-pending">
+              Sinh Viên
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="10">
+            <Link to="/admin/tuition-all-student">
+              Giảng Viên
+            </Link>
+            </Menu.Item>
+        </SubMenu> */}
+
+
+
     </div>
   )
 }
