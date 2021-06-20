@@ -29,3 +29,14 @@ export const checkAuthenRole = () => {
     }
     else return 0;
 }
+
+export const updatePasswordAuth = (data) => {
+    return axios({
+        method: 'put',
+        url: `${environment}/api/auth/update-password`,
+        headers: {
+            Authorization: includeAuthenHeader(),
+        },
+        data: {...data},
+    })
+}

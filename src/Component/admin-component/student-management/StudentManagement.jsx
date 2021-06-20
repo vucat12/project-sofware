@@ -120,7 +120,7 @@ function StudentManagement() {
   });
 
   useEffect(() => {
-    getDataStudents()
+    getDataStudents();
   }, []);
 
   async function getDataStudents() {
@@ -153,7 +153,7 @@ function StudentManagement() {
 
   const handleOkAddStudent = () => {
     const validate = form.validateFields();
-    validate.then(res => {
+    validate.then(async res => {
       if(validateForm.validateCode === 'error' && validateForm.validateUsername === 'error') {
         notification.open({
           message: 'Error notification',
@@ -169,7 +169,7 @@ function StudentManagement() {
         date_of_birth: moment(init.date_of_birth).format("YYYY-MM-DD") + 'T00:00:00.000Z',
         schoolYear: moment(init.schoolYear).format("YYYY")
       }
-      postNewStudent(dataForm);
+      await postNewStudent(dataForm);
 
       setIsAddNewStudent(false);
       form.resetFields();
@@ -179,6 +179,7 @@ function StudentManagement() {
         valueUsername: null,
         validateUsername: '',
       })
+      getDataStudents();
       }
     })
     .catch(err => {
@@ -331,8 +332,8 @@ function StudentManagement() {
         </div>
       </Modal>
 
-
       <Modal width={800} 
+      forceRender
       title="Thêm mới sinh viên" 
       visible={isAddNewStudent} 
       onOk={handleOkAddStudent} 
@@ -440,9 +441,9 @@ function StudentManagement() {
 <Row>
   <Col className="add-col">
   <Form.Item
-    label="Tổng học học phí"
+    label="Tín chỉ đã học"
     name="totalCreditQuantity"
-    rules={[{ required: true, message: 'Tổng học học phí là bắt buộc' }]}
+    rules={[{ required: true, message: 'Tín chỉ đã học là bắt buộc' }]}
   >
     <InputNumber />
   </Form.Item>

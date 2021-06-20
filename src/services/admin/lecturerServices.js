@@ -1,3 +1,4 @@
+import { notification } from "antd";
 import axios from "axios"
 import { includeAuthenHeader } from "../authen";
 import { environment } from "../environment";
@@ -44,4 +45,43 @@ export const getLecturerCourse = (semesterId, id) => {
             Authorization: includeAuthenHeader(),
         },
     }).then(res => res)
+}
+
+export const postNewLecturer = (data) => {
+    return axios({
+        method: `post`,
+        url: `${environment}/api/lecturer/create`, 
+        headers: {
+            Authorization: includeAuthenHeader(),
+        },
+        data: {...data}
+    }).then(res => res)
+}
+
+export const updateLecturer = (id, full_name) => {
+    return axios({
+        method: 'put',
+        url: `${environment}/api/lecturer/update/${id}`,
+        headers: {
+            Authorization: includeAuthenHeader(),
+        },
+        data: {full_name: full_name}
+    }).then(res => {
+        notification.open({
+            message: 'success notification',
+            description: 'Update success',
+            style: {
+              width: 600,
+            },
+        });
+    })
+    .catch(err => {
+        notification.open({
+            message: 'Error notification',
+            description: err.response.data.message,
+            style: {
+              width: 600,
+            },
+        });
+    });
 }
