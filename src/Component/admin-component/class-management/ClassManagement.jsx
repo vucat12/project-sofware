@@ -5,6 +5,7 @@ import { Breadcrumb, Button, Col, Form, Input, Popconfirm, Row, Select, Table } 
 import Modal from 'antd/lib/modal/Modal';
 import React, { useEffect, useState } from 'react';
 import { deleteClassById, getListClass, postNewClass, updateClassById } from '../../../services/admin/classServices';
+import { getClass } from '../../../services/admin/commonServices';
 import './ClassManagement.scss';
 
 const { Option } = Select;
@@ -87,6 +88,7 @@ function ClassManagement() {
     }
     setIsModalVisible(false);
     form.resetFields();
+    getClass();
   };
 
   const handleCancel = () => {

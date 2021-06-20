@@ -1,7 +1,7 @@
 import { Form, Button, Col, Input, Row, Table, Breadcrumb, Select, Popconfirm } from 'antd'
 import Modal from 'antd/lib/modal/Modal';
 import React, { useEffect, useState } from 'react'
-import { read_cookie } from '../../../services/admin/commonServices';
+import { getShift, read_cookie } from '../../../services/admin/commonServices';
 import { deleteOpenCourseById, getListOpenCourse, postNewOpenCourse, updateOpenCourseById } from '../../../services/admin/openCourseServices';
 import './OpenCourse.scss';
 import {
@@ -133,6 +133,7 @@ function OpenCourse() {
     setIsModalVisible(false);
     form.resetFields();
     setIsUpdate(null);
+    getShift();
   };
 
   const handleCancel = () => {

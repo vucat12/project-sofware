@@ -6,10 +6,10 @@ import { getClass, getCourse, getLecturer, getSemester, getShift } from '../../.
 function TopNav() {
 
   useEffect(() => {
-    getShift()
+    getShift();
     getClass();
     getCourse();
-    getLecturer()
+    getLecturer();
     getSemester();
   })
 

@@ -1,11 +1,11 @@
 import {
   SearchOutlined
 } from '@ant-design/icons';
-import { Breadcrumb, Button, Col, Input, Row, Table, Tag } from 'antd';
+import { Breadcrumb, Button, Col, Input, Row, Table, Form, DatePicker, notification, InputNumber } from 'antd';
 import Modal from 'antd/lib/modal/Modal';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { getListStudents, getStudentById, getStudentCourse } from '../../../services/admin/studentServices';
+import { getListStudents, getStudentById, getStudentCourse, postNewStudent } from '../../../services/admin/studentServices';
 import './StudentManagement.scss';
 
 const columnCourse = [
@@ -41,6 +41,14 @@ const columnCourse = [
   },
 ];
 
+const layout = {
+  labelCol: {
+    span: 8,
+  },
+  wrapperCol: {
+    span: 16,
+  },
+};
 
 function StudentManagement() {
 
@@ -48,7 +56,6 @@ function StudentManagement() {
     {
       title: 'MSSV',
       dataIndex: 'code',
-      render: (text, data) => <a onClick={() => getDetailStudent(data)}>{text}</a>,
       align: 'center'
     },
     {
@@ -92,12 +99,8 @@ function StudentManagement() {
     },
     {
       title: 'Trạng thái học phí',
-      dataIndex: 'fee_status',
       align: 'center',
-      render: (status) => (
-        <div>
-          <Tag color="success">{status}</Tag>
-        </div>)
+      render: (text, data) => <Button onClick={() => getDetailStudent(data)}>Xem chi tiết</Button>,
     },
   ];
 
@@ -106,6 +109,15 @@ function StudentManagement() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [dataDetailStudent, setDataDetailStudent] = useState({});
   const [dataCourse, setDataCourse] = useState({});
+  const [isAddNewStudent, setIsAddNewStudent] = useState(false);
+  const [form] = Form.useForm();
+
+  const [validateForm, setValidateForm] = useState({
+    valueCode: null,
+    validateCode: '', 
+    valueUsername: null,
+    validateUsername: '',
+  });
 
   useEffect(() => {
     getDataStudents()
@@ -139,6 +151,77 @@ function StudentManagement() {
     setDataCourse(res.data)
   }
 
+  const handleOkAddStudent = () => {
+    const validate = form.validateFields();
+    validate.then(res => {
+      if(validateForm.validateCode === 'error' && validateForm.validateUsername === 'error') {
+        notification.open({
+          message: 'Error notification',
+          description: 'Bạn thành hoàn thành các giá trị trước khi tiếp tục',
+          style: {
+            width: 600,
+          },
+        });
+      } else {
+      let init = form.getFieldValue();
+      const dataForm = {
+        ...init,
+        date_of_birth: moment(init.date_of_birth).format("YYYY-MM-DD") + 'T00:00:00.000Z',
+        schoolYear: moment(init.schoolYear).format("YYYY")
+      }
+      postNewStudent(dataForm);
+
+      setIsAddNewStudent(false);
+      form.resetFields();
+      setValidateForm({
+        valueCode: null,
+        validateCode: '', 
+        valueUsername: null,
+        validateUsername: '',
+      })
+      }
+    })
+    .catch(err => {
+      notification.open({
+        message: 'Error notification',
+        description: 'Bạn thành hoàn thành các giá trị trước khi tiếp tục',
+        style: {
+          width: 600,
+        },
+      });
+    })
+
+  }
+
+  const onCodeChange = (event) => {
+    setValidateForm({...validateForm, valueCode: event.target.value, validateCode: validateCodeNumber(event.target.value)});
+  }
+
+  const onUsernameChange = (event) => {
+    setValidateForm({...validateForm, valueUsername: event.target.value, validateUsername: validateUsername(event.target.value)})
+  }
+
+  const handleCancelAddStudent = () => {
+    setIsAddNewStudent(false);
+    form.resetFields();
+    setValidateForm({
+      valueCode: null,
+      validateCode: '', 
+      valueUsername: null,
+      validateUsername: '',
+    })
+  }
+
+  function validateCodeNumber(code) {
+    if(code.length === 8 && !isNaN(code)) return 'success';
+    else return 'error';
+  }
+  
+  function validateUsername(username) {
+    if(username.length >= 5) return 'success';
+    else return 'error';
+  }
+
   return (
     <div className="student-management">
       <Row className="pt-3 pb-3">
@@ -161,13 +244,22 @@ function StudentManagement() {
             <SearchOutlined style={{ fontSize: '14px' }} /> Tìm kiếm
           </Button>
         </Col>
+        <Col offset={5} span={2} className="text-right">
+          <Button type="primary" className="button-green"
+          onClick={() => setIsAddNewStudent(true)}>Thêm mới</Button>
+        </Col>
       </Row>
       <Table
         className="table"
         columns={columns}
         dataSource={dataSource}
       />
-      <Modal width={1000} title="Thông tin sinh viên" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} className="student-management-popup">
+      <Modal width={1000} 
+      title="Thông tin sinh viên" 
+      visible={isModalVisible} 
+      onOk={handleOk} 
+      onCancel={handleCancel} 
+      className="student-management-popup">
         <div className="student-management-modal">
 
           <div className="student-management-modal__profile">
@@ -237,9 +329,140 @@ function StudentManagement() {
           </div>
 
         </div>
-        
-       
       </Modal>
+
+
+      <Modal width={800} 
+      title="Thêm mới sinh viên" 
+      visible={isAddNewStudent} 
+      onOk={handleOkAddStudent} 
+      onCancel={handleCancelAddStudent} 
+      className="student-management-add">
+        <Form
+          form={form}
+          name="addStudent">
+
+<Row>
+  <Col className="add-col">
+    <Form.Item
+      label="MSSV"
+      name="code"
+      hasFeedback
+      rules={[{ required: true, message: 'Mã số sinh viên là bắt buộc và chỉ chứa toàn số' }]}
+      validateStatus={validateForm.validateCode}
+    >
+      <Input value={validateForm.valueCode} onChange={onCodeChange}/>
+    </Form.Item>
+  </Col>
+  
+  <Col>
+  <Form.Item
+      label="Ngày sinh"
+      name="date_of_birth"
+      rules={[{ required: true, message: 'Ngày sinh là bắt buộc' }]}
+    >
+      <DatePicker />
+    </Form.Item>
+  </Col>
+</Row>
+<Row>
+  <Col className="add-col">
+  <Form.Item
+    label="Email"
+    name="email"
+    hasFeedback
+    rules={[
+      { required: true, message: 'Email là bắt buộc' },
+      { type: 'email', message: 'Email không khả dụng' }
+    ]}
+  >
+    <Input />
+  </Form.Item>
+  </Col>
+  
+  <Col>
+  <Form.Item
+    label="Khoa"
+    name="faculty"
+    rules={[{ required: true, message: 'Khoa là bắt buộc' }]}
+  >
+    <Input />
+  </Form.Item>
+  </Col>
+</Row>
+
+<Row>
+  <Col className="add-col">
+  <Form.Item
+    label="Tên đầy đủ"
+    name="full_name"
+    rules={[{ required: true, message: 'Tên đầy đủ là bắt buộc' }]}
+  >
+    <Input />
+  </Form.Item>
+  </Col>
+  
+  <Col>
+  <Form.Item
+    label="Tên đặng nhập"
+    name="username"
+    hasFeedback
+    rules={[{ required: true, message: 'Tên đặng nhập là bắt buộc và phải lớn hơn 5 ký tự' }]}
+    validateStatus={validateForm.validateUsername}
+  >
+    <Input value={validateForm.valueUsername} onChange={onUsernameChange}/>
+  </Form.Item>
+  </Col>
+</Row>
+
+<Row>
+  <Col className="add-col">
+  <Form.Item
+    label="Mật khẩu"
+    name="password"
+    rules={[{ required: true, message: 'Mật khẩu là bắt buộc' }]}
+  >
+    <Input />
+  </Form.Item>
+  </Col>
+  
+  <Col>
+  <Form.Item
+    label="Năm học"
+    name="schoolYear"
+    rules={[{ required: true, message: 'Năm học là bắt buộc' }]}
+  >
+    <DatePicker picker="year" />
+  </Form.Item>
+  </Col>
+</Row>
+
+<Row>
+  <Col className="add-col">
+  <Form.Item
+    label="Tổng học học phí"
+    name="totalCreditQuantity"
+    rules={[{ required: true, message: 'Tổng học học phí là bắt buộc' }]}
+  >
+    <InputNumber />
+  </Form.Item>
+  </Col>
+  
+  <Col>
+  <Form.Item
+    label="Hệ đào tạo"
+    name="trainingSystem"
+    rules={[{ required: true, message: 'Hệ đào tạo là bắt buộc' }]}
+  >
+    <Input />
+  </Form.Item>
+  </Col>
+</Row>
+        </Form>
+
+      </Modal>
+
+      
     </div>
   )
 }

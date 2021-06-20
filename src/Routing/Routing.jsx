@@ -18,6 +18,8 @@ import SignUpSubject from '../Component/front-component/sign-up-subject/SignUpSu
 import LecturerManagement from '../Component/admin-component/lecturer-management/LecturerManagement'
 import ResolveFee from '../Component/front-component/resolve-fee/ResolveFee'
 import EditProfile from '../Component/front-component/edit-profile/EditProfile'
+import TuitionPending from '../Component/admin-component/tuition-pending/TuitionPending'
+import TuitionAllStudent from '../Component/admin-component/tution-all-student/TuitionAllStudent'
 
 function Routing() {
     const history = useHistory();
@@ -69,6 +71,8 @@ function Routing() {
                                 <Route path="/admin/open-course"><OpenCourse /></Route>
                                 <Route path="/admin/class-management"><ClassManagement /></Route>
                                 <Route path="/admin/lecturer-management"><LecturerManagement/></Route>
+                                <Route path="/admin/tuition-pending"><TuitionPending/></Route>
+                                <Route path="/admin/tuition-all-student"><TuitionAllStudent/></Route>
                             </div>
                             <Footer />
                         </div>

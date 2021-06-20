@@ -5,6 +5,7 @@ import { Breadcrumb, Button, Col, DatePicker, Form, Input, Popconfirm, Row, Sele
 import Modal from 'antd/lib/modal/Modal';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
+import { getSemester } from '../../../services/admin/commonServices';
 import { deleteSemesterById, getListSemester, postNewSemester, updateSemesterById } from '../../../services/admin/semesterServices';
 import './SemesterManagement.scss';
 
@@ -111,6 +112,7 @@ function SemesterManagement() {
     else await postNewSemester(data);
 
     getDataSemester();
+    getSemester();
     setIsModalVisible(false);
     setIsUpdate(null);
   };

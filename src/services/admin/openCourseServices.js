@@ -25,7 +25,7 @@ export const postNewOpenCourse = (data) => {
     }).then(res=> {
         notification.open({
             message: 'Success notification',
-            description: 'Delete Success',
+            description: 'Post Success',
             style: {
               width: 600,
             },

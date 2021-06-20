@@ -4,6 +4,7 @@ import {
 import { Breadcrumb, Button, Col, Form, Input, Popconfirm, Row, Table } from 'antd';
 import Modal from 'antd/lib/modal/Modal';
 import React, { useEffect, useState } from 'react';
+import { getCourse } from '../../../services/admin/commonServices';
 import { deleteCourseById, getListCourse, postNewCourse, updateCourseById } from '../../../services/admin/courseServices';
 import './CourseManagement.scss';
 
@@ -121,6 +122,7 @@ function CourseManagement() {
       await postNewCourse(data);
     }
     getDataCourse();
+    getCourse();
     setIsModalVisible(false);
   };
 

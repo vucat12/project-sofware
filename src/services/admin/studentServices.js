@@ -1,3 +1,4 @@
+import { notification } from "antd";
 import axios from "axios"
 import { includeAuthenHeader } from "../authen";
 import { environment } from "../environment";
@@ -32,4 +33,31 @@ export const getStudentCourse = (semesterId, id) => {
             Authorization: includeAuthenHeader(),
         },
     }).then(res =>res.data)
+}
+
+export const postNewStudent = (data) => {
+    return axios({
+        method: 'post',
+        url: `${environment}/api/student/create`,
+        headers: {
+            Authorization: includeAuthenHeader(),
+        },
+        data: {...data}
+    }).then(res=> {
+        notification.open({
+            message: 'Success notification',
+            description: 'Thêm sinh viên thành công',
+            style: {
+              width: 600,
+            },
+          });
+    }).catch(err => {
+        notification.open({
+            message: 'Error notification',
+            description: err.response.data.message,
+            style: {
+              width: 600,
+            },
+          });
+    });
 }

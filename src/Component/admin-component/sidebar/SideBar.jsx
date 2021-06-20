@@ -1,20 +1,14 @@
 import {
-  CalendarOutlined, HddOutlined, HomeOutlined, MenuOutlined, ReadOutlined, ScheduleOutlined, UsergroupAddOutlined
+  CalendarOutlined, HddOutlined, HomeOutlined, MenuOutlined, ReadOutlined, ScheduleOutlined, UsergroupAddOutlined, MoneyCollectOutlined
 } from '@ant-design/icons';
 import { Menu } from 'antd';
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import './SideBar.scss';
 
 const { SubMenu } = Menu;
 
 function SideBar() {
-
-  const [collapsed, setCollapsed] = useState(true);
-
-  const toggleCollapsed = () => {
-    setCollapsed(!collapsed)
-  };
 
   return (
     <div className="side-bar">
@@ -71,24 +65,19 @@ function SideBar() {
             Quản Lý Lớp Học
           </Link>
         </Menu.Item>
-      </Menu>
-
-
-      {/* <SubMenu key="sub3" icon={<UsergroupAddOutlined />} title="Quản Lý Học Phí">
+        <SubMenu key="sub3" icon={<MoneyCollectOutlined />} title="Quản Lý Học Phí">
           <Menu.Item key="9">
             <Link to="/admin/tuition-pending">
-              Sinh Viên
+              Danh sách học phí đang chờ
             </Link>
           </Menu.Item>
           <Menu.Item key="10">
             <Link to="/admin/tuition-all-student">
-              Giảng Viên
+              Danh sách tất cả học phí
             </Link>
             </Menu.Item>
-        </SubMenu> */}
-
-
-
+        </SubMenu>
+      </Menu>
     </div>
   )
 }

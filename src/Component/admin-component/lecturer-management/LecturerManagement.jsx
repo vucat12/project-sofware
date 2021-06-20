@@ -73,7 +73,7 @@
       {
         title: 'Hành động',
         dataIndex: 'id',
-        render: (id) => <Button type="primary" onClick={() => viewDetail(id)}>Xem chi tiết</Button>
+        render: (id) => <Button onClick={() => viewDetail(id)}>Xem chi tiết</Button>
       }
     ];
 
@@ -86,7 +86,6 @@
       let res = await getLecturerById(id);
       setDataDetailLecturer(res.data.data);
     }
-  
 
     useEffect(() => {
       getLecturers()
@@ -143,9 +142,7 @@
           dataSource={dataSource}
         />
 
-
-
-<Modal width={1000} title="Thông tin sinh viên" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} className="student-management-popup">
+<Modal width={1000} title="Thông tin giảng viên" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} className="student-management-popup">
         <div className="student-management-modal">
 
           <div className="student-management-modal__profile">
@@ -189,15 +186,8 @@
             </div>
             }
           </div>
-
-
         </div>
       </Modal>
-    
-
-
-
-
 
       </div>
     )

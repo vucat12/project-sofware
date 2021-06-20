@@ -1,6 +1,6 @@
 @import "./../../../common/variable.scss";
 
-.student-management {
+.tuition-pending {
     background-color: $color-white;
     border-radius: 10px;
     padding: 25px 22px;
@@ -22,23 +22,6 @@
         }
         &__information {
             width: 65%;
-        }
-    }
-    &-add {
-        .ant-col {
-            width: 50%;
-            .ant-form-item-label {
-                width: 40%;
-            }
-            .ant-form-item-control {
-                width: 60%;
-                .ant-input-number {
-                    width: 100%;
-                }
-            }
-            .ant-form-item-explain {
-                color: red;
-            }
         }
     }
 }
