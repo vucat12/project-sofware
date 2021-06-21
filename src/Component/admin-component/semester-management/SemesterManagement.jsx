@@ -43,12 +43,14 @@ function SemesterManagement() {
     {
       title: 'Tên học kỳ',
       dataIndex: 'name',
-      align: 'center'
+      align: 'center',
+      sorter: (a, b) => a.name.localeCompare(b.name)
     },
     {
       title: 'Trạng thái',
       dataIndex: 'status',
-      align: 'center'
+      align: 'center',
+      sorter: (a, b) => a.status.localeCompare(b.status)
     },
     {
       title: 'Thời gian bắt đầu',
@@ -99,7 +101,6 @@ function SemesterManagement() {
     })
   }
 
-
   const handleOk = async () => {
     let data = form.getFieldValue();
     data = {
@@ -127,6 +128,15 @@ function SemesterManagement() {
     setFilter({ ...filter, status: value })
   }
 
+  useEffect(() => {
+    getDataSemester();
+  }, [filter.status]);
+
+  function handleEnter(e) {
+    if(e.charCode === 13)
+    getDataSemester();
+  }
+
   return (
     <div className="semester-management">
       <Row className="pt-3 pb-3">
@@ -138,7 +148,7 @@ function SemesterManagement() {
       </Row>
       <Row>
         <Col span={12} className="align-center">
-          <Input className="mr-2" placeholder="Tìm kiếm..." onChange={(e) => setFilter({...filter, search: e.target.value })}/>
+          <Input className="mr-2" placeholder="Tìm kiếm..." onChange={(e) => setFilter({...filter, search: e.target.value })} onKeyPress={handleEnter}/>
         </Col>
         <Col span={2} style={{ height: '100%', display: 'flex' }}>
           <span className="ml-2 mt-1">Trạng thái: </span>
@@ -172,7 +182,7 @@ function SemesterManagement() {
         columns={columns}
         dataSource={dataSource}
       />
-      <Modal className="semester-management-popup" title="Thêm mới môn học" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+      <Modal className="semester-management-popup" title={isUpdate ? 'Chỉnh sửa học kỳ' : "Thêm mới học kỳ"} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
         <Form
           form={form}
           {...layout}

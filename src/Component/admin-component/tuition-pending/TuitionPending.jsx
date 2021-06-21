@@ -15,27 +15,32 @@ import { read_cookie } from '../../../services/admin/commonServices';
       {
         title: 'Tên kỳ học',
         dataIndex: 'semester_name',
-        align: 'center'
+        align: 'center',
+        sorter: (a, b) => a.semester_name.localeCompare(b.semester_name)
       },
       {
         title: 'Tên đầy đủ',
         dataIndex: 'full_name',
-        align: 'center'
+        align: 'center',
+        sorter: (a, b) => a.full_name.localeCompare(b.full_name)
       },
       {
         title: 'Học phí tổng cộng',
         dataIndex: 'total_fee',
-        align: 'center'
+        align: 'center',
+        sorter: (a, b) => a.total_fee.localeCompare(b.total_fee)
       },
       {
         title: 'Học phí đã đóng',
         dataIndex: 'total_fee_payment',
-        align: 'center'
+        align: 'center',
+        sorter: (a, b) => a.total_fee_payment.localeCompare(b.total_fee_payment)
       },
       {
         title: 'Tên đăng nhập',
         dataIndex: 'username',
-        align: 'center'
+        align: 'center',
+        sorter: (a, b) => a.username.localeCompare(b.username)
       },
       {
         title: 'Hành động', 
@@ -66,18 +71,27 @@ import { read_cookie } from '../../../services/admin/commonServices';
       setDataSource(dataTable.data.data);
     }
 
+    useEffect(() => {
+      getDataTuitionPendings();
+    }, [filter.semester_id])
+
+    function handleEnter(e) {
+      if(e.charCode === 13)
+      getDataTuitionPendings();
+    }
+    
     return (
       <div className="tuition-pending">
         <Row className="pt-3 pb-3">
           <Col span={24} className="align-center">
             <Breadcrumb className="breadcrumb">
-              <Breadcrumb.Item>Quản Lý Sinh viên</Breadcrumb.Item>
+              <Breadcrumb.Item>Quản Lý Học Phí Đang Chờ</Breadcrumb.Item>
             </Breadcrumb>
           </Col>
         </Row>
         <Row>
           <Col span={12} className="align-center">
-            <Input placeholder="Tìm kiếm..." onChange={(e) => {setFilter({...filter, full_name: e.target.value})}}/>
+            <Input placeholder="Tìm kiếm..." onChange={(e) => {setFilter({...filter, full_name: e.target.value})}} onKeyPress={handleEnter}/>
           </Col>
           <Col span={4} style={{ textAlign: 'center' }}>
             <Button

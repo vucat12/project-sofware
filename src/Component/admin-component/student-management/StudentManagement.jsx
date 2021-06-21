@@ -12,43 +12,40 @@ const columnCourse = [
   {
     title: 'Tên môn học',
     dataIndex: 'course_name',
-    align: 'center'
+    align: 'center',
+    sorter: (a, b) => a.course_name.localeCompare(b.course_name)
   },
   {
     title: 'Thứ/ Tiết/ Lớp',
     dataIndex: 'class_name',
-    align: 'center'
+    align: 'center',
+    sorter: (a, b) => a.class_name.localeCompare(b.class_name)
   },
   {
     title: 'Số tín chỉ',
     dataIndex: 'credit_quantity',
-    align: 'center'
+    align: 'center',
+    sorter: (a, b) => a.credit_quantity - b.credit_quantity,
   },
   {
     title: 'Số sinh viên hiện tại',
     dataIndex: 'current_quantity_student',
-    align: 'center'
+    align: 'center',
+    sorter: (a, b) => a.current_quantity_student - b.current_quantity_student,
   },
   {
     title: 'Số sinh viên tối đa',
     dataIndex: 'max_quantity_student',
-    align: 'center'
+    align: 'center',
+    sorter: (a, b) => a.max_quantity_student - b.max_quantity_student,
   },
   {
     title: 'Tên giảng viên',
     dataIndex: 'lecturer_name',
     align: 'center',
+    sorter: (a, b) => a.lecturer_name.localeCompare(b.lecturer_name)
   },
 ];
-
-const layout = {
-  labelCol: {
-    span: 8,
-  },
-  wrapperCol: {
-    span: 16,
-  },
-};
 
 function StudentManagement() {
 
@@ -56,35 +53,40 @@ function StudentManagement() {
     {
       title: 'MSSV',
       dataIndex: 'code',
-      align: 'center'
+      align: 'center',
+      sorter: (a, b) => a.code - b.code,
     },
     {
       title: 'Khóa học',
       dataIndex: 'school_year',
-      align: 'center'
+      align: 'center',
+      sorter: (a, b) => a.school_year.localeCompare(b.school_year)
     },
     {
       title: 'Tên đầy đủ',
       dataIndex: 'full_name',
-      align: 'center'
+      align: 'center',
+      sorter: (a, b) => a.full_name.localeCompare(b.full_name)
     },
     {
       title: 'Email',
       dataIndex: 'email',
-      align: 'center'
+      align: 'center',
+      sorter: (a, b) => a.email.localeCompare(b.email)
     },
     {
       title: 'Ngày sinh',
       dataIndex: 'date_of_birth',
       align: 'center',
-      render: (dateOfBirth) => <span>{moment(dateOfBirth).format("DD/MM/YYYY")}</span>
+      render: (dateOfBirth) => <span>{moment(dateOfBirth).format("DD/MM/YYYY")}</span>,
+      sorter: (a, b) => a.date_of_birth - b.date_of_birth,
     },
     {
       title: 'Tín chỉ đã học',
       dataIndex: 'credit_quantity_experienced',
       align: 'center',
       sorter: {
-        compare: (a, b) => a.credit_quantity_experienced - b.credit_quantity_experienced,
+        compare: (a, b) => a.credit_quantity_present - b.credit_quantity_present,
         multiple: 10,
       },
     },
@@ -223,6 +225,11 @@ function StudentManagement() {
     else return 'error';
   }
 
+  function handleEnter(e) {
+    if(e.charCode === 13)
+    getDataStudents();
+  }
+
   return (
     <div className="student-management">
       <Row className="pt-3 pb-3">
@@ -234,7 +241,7 @@ function StudentManagement() {
       </Row>
       <Row>
         <Col span={12} className="align-center">
-          <Input placeholder="Tìm kiếm..." onChange={(e) => {setFilter({...filter, full_name: e.target.value})}}/>
+          <Input placeholder="Tìm kiếm..." onChange={(e) => {setFilter({...filter, full_name: e.target.value})}} onKeyPress={handleEnter}/>
         </Col>
         <Col span={4} style={{ textAlign: 'center' }}>
           <Button
@@ -312,7 +319,7 @@ function StudentManagement() {
             </div>
 { !(dataCourse && Object.keys(dataCourse).length === 0 && dataCourse.constructor === Object) &&
  <div className="student-management-modal__information--detail mt-3">
-   <Table dataSource={dataCourse.course_register} columns={columnCourse} pagination={false}/>
+   <Table dataSource={dataCourse.course_register} columns={columnCourse} pagination={false} scroll={{ y: 300 }}/>
    <Row>
     <Col span={12}>
       <p>Số tín chỉ: <strong>{dataCourse.credit_quantity}</strong></p>

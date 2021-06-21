@@ -79,7 +79,7 @@ export const updateOpenCourseById = (data) => {
         headers: {
             Authorization: includeAuthenHeader(),
         },
-        data: dataPost
+        data: {...dataPost}
     }).then(res => {
         notification.open({
             message: 'success notification',

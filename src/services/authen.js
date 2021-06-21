@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { environment } from './environment';
 import decode from 'jwt-decode';
+import { notification } from 'antd';
 
 export const LogInPage = (username, password) => {
     return axios({
@@ -13,6 +14,14 @@ export const LogInPage = (username, password) => {
     }).then(res => {
         window.localStorage.setItem('access_token', res.data.access_token)
         return res;
+    }).catch(err => {
+        notification.open({
+            message: 'Error notification',
+            description: err.response.data.message,
+            style: {
+              width: 600,
+            },
+          });
     })
 }
 
@@ -38,5 +47,15 @@ export const updatePasswordAuth = (data) => {
             Authorization: includeAuthenHeader(),
         },
         data: {...data},
+    })
+}
+
+export const getInfoDashboard = () => {
+    return axios({
+        method: 'get',
+        url: `${environment}/api/dashboard`,
+        headers: {
+            Authorization: includeAuthenHeader(),
+        },
     })
 }

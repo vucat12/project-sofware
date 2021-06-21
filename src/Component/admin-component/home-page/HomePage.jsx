@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { Card, Tag, Col, Form, Input, Popconfirm, Row, Select, Table } from 'antd';
+import { Card, Tag, Col, Row } from 'antd';
 import './HomePage.scss';
 import {
     SmileOutlined
 } from '@ant-design/icons';
+import { getInfoDashboard } from '../../../services/authen';
 const title = (content, tag, color) => (
     <Row className="title-wrapper">
         <Col className="title-content" span={16}>
@@ -39,6 +40,8 @@ const getDayOfWeek = (current_day) => {
 
 function HomePage() {
     const [date, setDate] = useState(new Date());
+    const [dataDashBoard, setDataDashBoard] = useState({});
+
     useEffect(() => {
         const intervalID = setTimeout(() => {
             setDate(new Date())
@@ -46,27 +49,34 @@ function HomePage() {
 
         return () => clearInterval(intervalID);
     });
+
+    useEffect(() => {
+        getInfoDashboard().then(res => {
+            setDataDashBoard(res.data.data);
+        })
+    }, []);
+
     return (
         <div className="home-page">
             <Row>
                 <Col span={6}>
-                    <Card title={title('SL Lớp', 'Trong Ngày', '#508FF4')} className="card">
-                        20
+                    <Card title={title('Lớp trong ngày', 'Trong Ngày', '#508FF4')} className="card">
+                        {dataDashBoard.class_in_day}
                     </Card>
                 </Col>
                 <Col span={6}>
-                    <Card title={title('SL Lớp', 'Trong Tuần', '#FFBF43')} className="card">
-                        20
+                    <Card title={title('Lớp trong tuần', 'Trong Tuần', '#FFBF43')} className="card">
+                        {dataDashBoard.class_in_week}
                     </Card>
                 </Col>
                 <Col span={6}>
-                    <Card title={title('SL Sinh Viên', 'Trong Ngày', '#4BE69D')} className="card">
-                        20
+                    <Card title={title('Sinh viên trong ngày', 'Trong Ngày', '#4BE69D')} className="card">
+                        {dataDashBoard.student_in_day}
                     </Card>
                 </Col>
                 <Col span={6}>
                     <Card title={title('SL Sinh Viên', 'Trong Tuần', '#9267FF')} className="card">
-                        20
+                        {dataDashBoard.student_in_week}
                     </Card>
                 </Col>
             </Row>

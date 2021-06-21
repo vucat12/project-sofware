@@ -17,32 +17,38 @@ import { read_cookie } from '../../../services/admin/commonServices';
     {
       title: 'Thứ/ tiết/ lớp',
       dataIndex: 'class_name',
-      align: 'center'
+      align: 'center',
+      sorter: (a, b) => a.class_name.localeCompare(b.class_name)
     },
     {
       title: 'Tên môn học',
       dataIndex: 'course_name',
-      align: 'center'
+      align: 'center',
+      sorter: (a, b) => a.course_name.localeCompare(b.course_name)
     },
     {
       title: 'Số tín chỉ',
       dataIndex: 'credit_quantity',
-      align: 'center'
+      align: 'center',
+      sorter: (a, b) => a.credit_quantity - b.credit_quantity,
     },
     {
       title: 'Số sinh viên hiện tại',
       dataIndex: 'current_quantity_student',
-      align: 'center'
+      align: 'center',
+      sorter: (a, b) => a.current_quantity_student - b.current_quantity_student,
     },
     {
       title: 'Tên giảng viên',
       dataIndex: 'lecturer_name',
-      align: 'center'
+      align: 'center',
+      sorter: (a, b) => a.lecturer_name.localeCompare(b.lecturer_name)
     },
     {
       title: 'Số sinh viên tối đa',
       dataIndex: 'max_quantity_student',
-      align: 'center'
+      align: 'center',
+      sorter: (a, b) => a.max_quantity_student - b.max_quantity_student,
     },
   ];
 
@@ -53,27 +59,32 @@ import { read_cookie } from '../../../services/admin/commonServices';
       {
         title: 'Tên đầy đủ',
         dataIndex: 'full_name',
-        align: 'center'
+        align: 'center',
+        sorter: (a, b) => a.full_name.localeCompare(b.full_name)
       },
       {
         title: 'Tổng số tín chỉ ở học kỳ',
         dataIndex: 'total_credit_in_semester',
-        align: 'center'
+        align: 'center',
+        sorter: (a, b) => a.total_credit_in_semester - b.total_credit_in_semester,
       },
       {
         title: 'Tổng học phí trong học kỳ',
         dataIndex: 'total_fee_in_semester',
-        align: 'center'
+        align: 'center',
+        sorter: (a, b) => a.total_fee_in_semester.localeCompare(b.total_fee_in_semester)
       },
       {
         title: 'Học phí còn nợ',
         dataIndex: 'total_fee_debt',
-        align: 'center'
+        align: 'center',
+        sorter: (a, b) => a.total_fee_debt.localeCompare(b.total_fee_debt)
       },
       {
         title: 'Học phí phải trả',
         dataIndex: 'total_fee_payment',
-        align: 'center'
+        align: 'center',
+        sorter: (a, b) => a.total_fee_payment.localeCompare(b.total_fee_payment)
       },
       {
         title: 'Hành động', 
@@ -102,7 +113,6 @@ import { read_cookie } from '../../../services/admin/commonServices';
     
     const viewDetail = async (data) => {
       let res = await getTuitionDetailStudent(filter.semester_id, data.student_id);
-      console.log(res.data.data);
       setDataDetailStudent(res.data.data);
       setIsModalVisible(true)
     }
@@ -121,18 +131,27 @@ import { read_cookie } from '../../../services/admin/commonServices';
       setIsModalVisible(false);
     }
 
+    useEffect(() => {
+      getTuitionAll();
+    }, [filter.semester_id])
+
+    function handleEnter(e) {
+      if(e.charCode === 13)
+      getTuitionAll();
+    }
+
     return (
       <div className="tuition-all-student">
         <Row className="pt-3 pb-3">
           <Col span={24} className="align-center">
             <Breadcrumb className="breadcrumb">
-              <Breadcrumb.Item>Quản Lý Sinh viên</Breadcrumb.Item>
+              <Breadcrumb.Item>Quản Lý Tất Cả Học Phí</Breadcrumb.Item>
             </Breadcrumb>
           </Col>
         </Row>
         <Row>
           <Col span={12} className="align-center">
-            <Input placeholder="Tìm kiếm..." onChange={(e) => {setFilter({...filter, full_name: e.target.value})}}/>
+            <Input placeholder="Tìm kiếm..." onChange={(e) => {setFilter({...filter, full_name: e.target.value})}} onKeyPress={handleEnter}/>
           </Col>
           <Col span={4} style={{ textAlign: 'center' }}>
             <Button

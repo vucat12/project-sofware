@@ -55,12 +55,14 @@ function ClassManagement() {
     {
       title: 'Tên lớp học',
       dataIndex: 'name',
-      align: 'center'
+      align: 'center',
+      sorter: (a, b) => a.name.localeCompare(b.name)
     },
     {
       title: 'Mô tả lớp học',
       dataIndex: 'description',
-      align: 'center'
+      align: 'center',
+      sorter: (a, b) => a.description.localeCompare(b.description)
     },
     {
       title: 'Hành động',
@@ -96,6 +98,11 @@ function ClassManagement() {
     form.resetFields();
   };
 
+  function handleEnter(e) {
+    if(e.charCode === 13)
+    getDataClass();
+  }
+
   return (
     <div className="class-management">
       <Row className="pt-3 pb-3">
@@ -108,7 +115,7 @@ function ClassManagement() {
       <Row>
         <Col span={12} className="align-center">
           <Input className="mr-2" placeholder="Tìm kiếm..."
-            value={filter.class_name} onChange={(e) => setFilter({ ...filter, class_name: e.target.value })} />
+            value={filter.class_name} onChange={(e) => setFilter({ ...filter, class_name: e.target.value })}  onKeyPress={handleEnter}/>
         </Col>
         <Col span={4} style={{ textAlign: 'center' }}>
           <Button
@@ -120,12 +127,6 @@ function ClassManagement() {
           </Button>
         </Col>
         <Col offset={2} span={3} className="text-right" style={{ marginRight: '14px' }}>
-          <div>
-            <Select className="select" defaultValue="DESC" >
-              <Option value="ASC">Tăng Dần</Option>
-              <Option value="DESC">Giảm Dần</Option>
-            </Select>
-          </div>
         </Col>
         <Col span={2} className="text-right">
           <Button type="primary" className="button-green"
@@ -139,7 +140,7 @@ function ClassManagement() {
       />
       <Modal
         className="class-management-popup"
-        title="Thêm mới môn học"
+        title={isUpdate ? 'Chỉnh sửa lớp học' : "Thêm mới lớp học"} 
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}

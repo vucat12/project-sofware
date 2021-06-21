@@ -25,6 +25,8 @@ function TopNav() {
 
   const handleLogout = () => {
     localStorage.removeItem("access_token");
+    localStorage.removeItem("current_key");
+    document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
     window.location.pathname = "/login";
   }
 
@@ -50,16 +52,26 @@ function TopNav() {
           });
         }
         else {
-          updatePasswordAuth(res);
-          notification.open({
-            message: 'Success notification',
-            description: 'Đổi mật khẩu thành công',
-            style: {
-              width: 600,
-            },
+          updatePasswordAuth(res).then(res => {
+            notification.open({
+              message: 'Success notification',
+              description: 'Đổi mật khẩu thành công',
+              style: {
+                width: 600,
+              },
+            });
+            setIsModalChangePassword(false);
+            form.resetFields();
+          }).catch(err => {
+            notification.open({
+              message: 'Error notification',
+              description: err.response.data.message,
+              style: {
+                width: 600,
+              },
           });
-          setIsModalChangePassword(false);
-          form.resetFields();
+          });
+          
         }
       }).catch(err => {
         notification.open({

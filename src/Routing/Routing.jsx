@@ -25,11 +25,9 @@ function Routing() {
     const history = useHistory();
 
     useEffect(() => {
-
         if (!checkAuthenRole().role) history.push("/login")
-        if (checkAuthenRole().role === "ADMIN") history.push("/admin/home")
-        if (checkAuthenRole().role === "USER") history.push("/front/sign-up-subject")
-
+        // if (checkAuthenRole().role === "ADMIN") history.push("/admin/home")
+        // if (checkAuthenRole().role === "USER") history.push("/front/sign-up-subject")
     }, []);
 
     return (

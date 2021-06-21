@@ -57,7 +57,8 @@ function CourseManagement() {
     {
       title: 'Tên môn',
       dataIndex: 'name',
-      align: 'center'
+      align: 'center',
+      sorter: (a, b) => a.name.localeCompare(b.name)
     },
     {
       title: 'Tín chỉ',
@@ -70,15 +71,6 @@ function CourseManagement() {
     },
     {
       title: 'Giá tín chỉ',
-      dataIndex: 'price_advanced',
-      align: 'center',
-      sorter: {
-        compare: (a, b) => a.price_advanced - b.price_advanced,
-        multiple: 10,
-      },
-    },
-    {
-      title: 'Giá tín chỉ học lại',
       dataIndex: 'price_basic',
       align: 'center',
       sorter: {
@@ -89,12 +81,14 @@ function CourseManagement() {
     {
       title: 'Loại',
       dataIndex: 'type_course',
-      align: 'center'
+      align: 'center',
+      sorter: (a, b) => a.type_course.localeCompare(b.type_course)
     },
     {
       title: 'Mô tả',
       dataIndex: 'description',
-      align: 'center'
+      align: 'center',
+      sorter: (a, b) => a.description.localeCompare(b.description)
     },
     {
       title: 'Hành động',
@@ -132,6 +126,11 @@ function CourseManagement() {
     form.resetFields();
   };
 
+  function handleEnter(e) {
+    if(e.charCode === 13)
+    getDataCourse();
+  }
+
   return (
     <div className="course-management">
       <Row className="pt-3 pb-3">
@@ -144,7 +143,7 @@ function CourseManagement() {
       <Row>
         <Col span={12} className="align-center">
           <Input className="mr-2" placeholder="Tìm kiếm..."
-            value={filter.course_name} onChange={(e) => setFilter({ ...filter, course_name: e.target.value })} />
+            value={filter.course_name} onChange={(e) => setFilter({ ...filter, course_name: e.target.value })} onKeyPress={handleEnter}/>
         </Col>
         <Col span={4} style={{ textAlign: 'center' }}>
           <Button
@@ -168,7 +167,7 @@ function CourseManagement() {
         columns={columns}
         dataSource={dataSource}
       />
-      <Modal className="course-management-popup" title="Thêm mới môn học" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+      <Modal className="course-management-popup" title={isUpdate ? 'Chỉnh sửa môn học' : "Thêm mới môn học"} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
         <Form
           form={form}
           {...layout}

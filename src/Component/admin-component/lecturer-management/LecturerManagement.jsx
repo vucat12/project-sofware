@@ -12,32 +12,38 @@
     {
       title: 'Tên môn học',
       dataIndex: 'course_name',
-      align: 'center'
+      align: 'center',
+      sorter: (a, b) => a.course_name.localeCompare(b.course_name)
     },
     {
       title: 'Thứ/ Tiết/ Lớp',
       dataIndex: 'class_name',
-      align: 'center'
+      align: 'center',
+      sorter: (a, b) => a.class_name.localeCompare(b.class_name)
     },
     {
       title: 'Số tín chỉ',
       dataIndex: 'credit_quantity',
-      align: 'center'
+      align: 'center',
+      sorter: (a, b) => a.credit_quantity - b.credit_quantity,
     },
     {
       title: 'Số sinh viên hiện tại',
       dataIndex: 'current_quantity_student',
-      align: 'center'
+      align: 'center',
+      sorter: (a, b) => a.current_quantity_student - b.current_quantity_student,
     },
     {
       title: 'Số sinh viên tối đa',
       dataIndex: 'max_quantity_student',
-      align: 'center'
+      align: 'center',
+      sorter: (a, b) => a.max_quantity_student - b.max_quantity_student,
     },
     {
       title: 'Tên giảng viên',
       dataIndex: 'lecturer_name',
       align: 'center',
+      sorter: (a, b) => a.lecturer_name.localeCompare(b.lecturer_name)
     },
   ];
   
@@ -60,22 +66,26 @@
       {
         title: 'Tên giảng viên',
         dataIndex: 'full_name',
-        align: 'center'
+        align: 'center',
+        sorter: (a, b) => a.full_name.localeCompare(b.full_name)
       },
       {
         title: 'Email',
         dataIndex: 'email',
-        align: 'center'
+        align: 'center',
+        sorter: (a, b) => a.email.localeCompare(b.email)
       },
       {
         title: 'Tên đăng nhập',
         dataIndex: 'username',
-        align: 'center'
+        align: 'center',
+        sorter: (a, b) => a.username.localeCompare(b.username)
       },
       {
         title: 'Tổng khóa dạy',
         dataIndex: 'total_course',
-        align: 'center'
+        align: 'center',
+        sorter: (a, b) => a.total_course - b.total_course,
       },
       {
         title: 'Hành động',
@@ -165,6 +175,12 @@
       await updateLecturer(id, fullName);
       setIsUpdateLecturer(null)
       getLecturerDataById(id);
+      getLecturers();
+    }
+
+    function handleEnter(e) {
+      if(e.charCode === 13)
+      getLecturers();
     }
   
     return (
@@ -178,7 +194,7 @@
         </Row>
         <Row>
           <Col span={12} className="align-center">
-            <Input placeholder="Tìm kiếm..." onChange={(e) => {setFilter({...filter, full_name: e.target.value})}}/>
+            <Input placeholder="Tìm kiếm..." onChange={(e) => {setFilter({...filter, full_name: e.target.value})}} onKeyPress={handleEnter}/>
           </Col>
           <Col span={4} style={{ textAlign: 'center' }}>
             <Button
@@ -244,7 +260,7 @@
             </div>
             { !(dataCourse && Object.keys(dataCourse).length === 0 && dataCourse.constructor === Object) &&
             <div className="student-management-modal__information--detail mt-3">
-              <Table dataSource={dataCourse.list} columns={columnCourse} pagination={false}/>
+              <Table dataSource={dataCourse.list} columns={columnCourse} pagination={false} scroll={{ y: 300 }}/>
               <Row>
                 <Col span={12}>
                   <p>Từ : <strong>{moment(dataCourse.from_date).format("DD/MM/YYYY")}</strong></p>

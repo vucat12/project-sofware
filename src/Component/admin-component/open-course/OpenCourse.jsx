@@ -47,21 +47,25 @@ function OpenCourse() {
       title: 'Tên lớp',
       dataIndex: 'class_name',
       align: 'center',
+      sorter: (a, b) => a.class_name.localeCompare(b.class_name)
     },
     {
       title: 'Tên khóa học',
       dataIndex: 'course_name',
       align: 'center',
+      sorter: (a, b) => a.course_name.localeCompare(b.course_name)
     },
     {
       title: 'Ngày học',
       dataIndex: 'day_of_week',
-      align: 'center'
+      align: 'center',
+      sorter: (a, b) => a.day_of_week.localeCompare(b.day_of_week)
     },
     {
       title: 'Tên giảng viên',
       dataIndex: 'lecturer_name',
-      align: 'center'
+      align: 'center',
+      sorter: (a, b) => a.lecturer_name.localeCompare(b.lecturer_name)
     },
     {
       title: 'Số lượng sinh viên tối đa',
@@ -76,11 +80,13 @@ function OpenCourse() {
       title: 'Học kỳ',
       dataIndex: 'semester',
       align: 'center',
+      sorter: (a, b) => a.semester.localeCompare(b.semester)
     },
     {
       title: 'Ca',
       dataIndex: 'shifts',
       align: 'center',
+      sorter: (a, b) => a.shifts.length - b.shifts.length,
     },
     {
       width: 80,
@@ -142,6 +148,11 @@ function OpenCourse() {
     setIsUpdate(null);
   };
 
+  function handleEnter(e) {
+    if(e.charCode === 13)
+    getDataOpenCourse();
+  }
+
   return (
     <div className="open-course">
       <Row className="pt-3 pb-3">
@@ -153,7 +164,7 @@ function OpenCourse() {
       </Row>
       <Row>
         <Col span={12} className="align-center">
-          <Input className="mr-2" placeholder="Tìm kiếm..." onChange={(e) => setFilter({...filter, search: e.target.value})}/>
+          <Input className="mr-2" placeholder="Tìm kiếm..." onChange={(e) => setFilter({...filter, search: e.target.value})} onKeyPress={handleEnter}/>
         </Col>
         <Col span={4} style={{ textAlign: 'center' }}>
           <Button
@@ -180,7 +191,7 @@ function OpenCourse() {
         width={600}
         centered
         className="open-course-popup"
-        title="Thêm mới môn học"
+        title={isUpdate ? 'Chỉnh sửa lớp học' : "Thêm mới lớp học"} 
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}

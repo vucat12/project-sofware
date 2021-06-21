@@ -121,6 +121,11 @@ function CalendarPage() {
     })
   }
 
+  const enterEvent = (e) => {
+    if(e.charCode === 13)
+    getSearchCalendar()
+  }
+
   return (
     <div className="calendar-page">
       <Breadcrumb className="breadcrumb">
@@ -130,11 +135,11 @@ function CalendarPage() {
       <Row className="calendar-page-search">
         <Col span={10} className="pr-4">
           <div>Tên lớp: </div>
-          <Input value={valueSearch.class_name} onChange={changeClassName} />
+          <Input value={valueSearch.class_name} onChange={changeClassName} onKeyPress={enterEvent}/>
         </Col>
         <Col span={10} className="pr-4">
           <div>Tên khóa học: </div>
-          <Input value={valueSearch.course_name} onChange={changeCourseName} />
+          <Input value={valueSearch.course_name} onChange={changeCourseName}  onKeyPress={enterEvent}/>
         </Col>
         <Col span={4} style={{
           textAlign: 'center', display: 'flex',

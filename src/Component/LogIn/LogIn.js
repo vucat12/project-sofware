@@ -8,7 +8,7 @@ export const LogIn = () => {
 
     const onFinish = (values) => {
         LogInPage(values.username, values.password).then(res => {
-            if(res.status === 200) window.location.pathname = '/admin/home';
+            if(res?.status === 200) window.location.pathname = '/admin/home';
         });
       };
     
@@ -51,7 +51,7 @@ export const LogIn = () => {
                     }
                     ]}
                 >
-                    <Input placeholder="Password"/>
+                    <Input type="password" placeholder="Password"/>
                 </Form.Item>
 
                 <Form.Item className="pt-2">

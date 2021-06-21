@@ -2,13 +2,26 @@ import {
   CalendarOutlined, HddOutlined, HomeOutlined, MenuOutlined, ReadOutlined, ScheduleOutlined, UsergroupAddOutlined, MoneyCollectOutlined
 } from '@ant-design/icons';
 import { Menu } from 'antd';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './SideBar.scss';
 
 const { SubMenu } = Menu;
 
 function SideBar() {
+  const [currentKey, setCurrentKey] = useState('1');
+
+  useEffect(() => {
+    let current = localStorage.getItem('current_key') ? localStorage.getItem('current_key') : '1';
+    console.log(current);
+    setCurrentKey(current);
+  }, []);
+
+  function handleSide(e) {
+    console.log(e.key);
+    setCurrentKey(e.key);
+    window.localStorage.setItem('current_key', e.key)
+  }
 
   return (
     <div className="side-bar">
@@ -17,7 +30,8 @@ function SideBar() {
         </div>
       </div>
       <Menu
-        defaultSelectedKeys={['1']}
+        onClick={handleSide}
+        selectedKeys={[currentKey]}
         mode="inline"
         theme="dark"
         inlineCollapsed={false}
