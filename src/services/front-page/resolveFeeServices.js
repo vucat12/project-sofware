@@ -45,7 +45,7 @@ export const postFeePayment = (data) => {
     }).catch(err => {
         notification.open({
             message: 'Error notification',
-            description: "Không nhập tiền mà đòi đóng học phí!",
+            description: err.response.data.message,
             style: {
               width: 600,
             },

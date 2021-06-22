@@ -2,14 +2,14 @@
 import React from 'react';
 import './LogIn.scss';
 import { Form, Input, Button } from "antd";
-import { LogInPage } from '../../services/authen';
+import { checkAuthenRole, LogInPage } from '../../services/authen';
 
 export const LogIn = () => {
 
-    const onFinish = (values) => {
-        LogInPage(values.username, values.password).then(res => {
-            if(res?.status === 200) window.location.pathname = '/admin/home';
-        });
+    const onFinish = async (values) => {
+        await LogInPage(values.username, values.password);
+        if(checkAuthenRole().role==="USER") window.location.pathname='/front/sign-up-subject';
+        else window.location.pathname='/admin/home';
       };
     
       const onFinishFailed = (errorInfo) => {
