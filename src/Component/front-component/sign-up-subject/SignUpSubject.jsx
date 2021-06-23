@@ -126,7 +126,6 @@ function SignUpSubject() {
             <span className="font-bold font-italic"> {informationUser?.code}</span>
           </p>
           <p><span>Ngày sinh:</span><span> {moment(informationUser?.date_of_birth).format("DD-MM-YYYY")}</span></p>
-          <p><span>Giới tính:</span><span> {informationUser?.gender}</span></p>
         </div>
       </div>
       <Collapse className="collapse">

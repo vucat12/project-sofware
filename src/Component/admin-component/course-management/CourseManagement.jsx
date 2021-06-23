@@ -44,9 +44,9 @@ function CourseManagement() {
     setIsModalVisible(true);
 
     form.setFieldsValue({
+      code: e.code,
       name: e.name,
       credit_quantity: e.credit_quantity,
-      price_advanced: e.price_advanced,
       price_basic: e.price_basic,
       type_course: e.type_course,
       description: e.description,
@@ -104,20 +104,23 @@ function CourseManagement() {
     }
   ];
 
-  const handleOk = async () => {
-    let data = form.getFieldValue();
-    data.credit_quantity = parseInt(data.credit_quantity);
-    data.price_advanced = parseInt(data.price_advanced);
-    data.price_basic = parseInt(data.price_basic);
-
-    if (isUpdate) {
-      await updateCourseById({ ...data, id: isUpdate });
-    } else {
-      await postNewCourse(data);
-    }
-    getDataCourse();
-    getCourse();
-    setIsModalVisible(false);
+  const handleOk = () => {
+    form.validateFields().then(async res =>{
+      let data = form.getFieldValue();
+      data.credit_quantity = parseInt(data.credit_quantity);
+      data.price_basic = parseInt(data.price_basic);
+  
+      if (isUpdate) {
+        await updateCourseById({ ...data, id: isUpdate });
+      } else {
+        await postNewCourse(data);
+      }
+      getDataCourse();
+      getCourse();
+      setIsModalVisible(false);
+      form.resetFields();
+    })
+    
   };
 
   const handleCancel = () => {
@@ -173,6 +176,14 @@ function CourseManagement() {
           {...layout}
           name="basic">
           <Form.Item
+            label="Mã môn học"
+            name="code"
+            rules={[{ required: true, message: 'Mã môn học là bắt buộc' }]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
             label="Tên môn học"
             name="name"
             rules={[{ required: true, message: 'Tên môn học là bắt buộc' }]}
@@ -190,13 +201,6 @@ function CourseManagement() {
             label="Giá cơ bản"
             name="price_basic"
             rules={[{ required: true, message: 'Giá cơ bản là bắt buộc' }]}
-          >
-            <Input type="number" />
-          </Form.Item>
-          <Form.Item
-            label="Giá khuyến mãi"
-            name="price_advanced"
-            rules={[{ required: true, message: 'Giá khuyến mãi là bắt buộc' }]}
           >
             <Input type="number" />
           </Form.Item>

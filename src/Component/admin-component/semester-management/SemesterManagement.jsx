@@ -30,10 +30,6 @@ function SemesterManagement() {
 
   const [form] = Form.useForm();
 
-  useEffect(() => {
-    getDataSemester();
-  }, []);
-
   async function getDataSemester() {
     let data = await getListSemester(filter);
     setDataSource(data.data);
@@ -101,21 +97,28 @@ function SemesterManagement() {
     })
   }
 
-  const handleOk = async () => {
-    let data = form.getFieldValue();
-    data = {
-      ...data, 
-      from_date: moment(data.from_date._d).format("YYYY-MM-DD") + 'T00:00:00Z',
-      to_date: moment(data.to_date._d).format("YYYY-MM-DD") + 'T00:00:00Z',
-    }
-
-    if(isUpdate) await updateSemesterById({id: isUpdate, name: data.name}) 
-    else await postNewSemester(data);
-
-    getDataSemester();
-    getSemester();
-    setIsModalVisible(false);
-    setIsUpdate(null);
+  const handleOk = () => {
+    form.validateFields().then(async res => {
+      let data = form.getFieldValue();
+      data = {
+        ...data, 
+        from_date: moment(data.from_date?._d).format("YYYY-MM-DD") + 'T00:00:00Z',
+        to_date: moment(data.to_date?._d).format("YYYY-MM-DD") + 'T00:00:00Z',
+      }
+  
+      if(isUpdate) await updateSemesterById({
+        id: isUpdate, 
+        name: data.name,
+        from_date: data.from_date,
+        to_date: data.to_date,
+      }) 
+      else await postNewSemester(data);
+  
+      getDataSemester();
+      getSemester();
+      setIsModalVisible(false);
+      setIsUpdate(null);
+    })
   };
 
   const handleCancel = () => {

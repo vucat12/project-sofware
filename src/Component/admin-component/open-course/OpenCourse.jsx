@@ -120,26 +120,28 @@ function OpenCourse() {
       class_id: class_id[0].id,
       course_id: course_id[0].id,
       day_of_week: e.day_of_week,
-      lecturer_id: lecturer_id[0].full_name,
+      lecturer_id: lecturer_id[0].id,
       max_quantity_student: e.max_quantity_student,
       semester_id: semester_id[0].id,
-      shifts: e.shifts,
+      shifts: e.shiftIds,
     })
   }
 
-  const handleOk = async () => {
-    let data = form.getFieldValue();
+  const handleOk = () => {
+    form.validateFields().then(async res => {
+      let data = form.getFieldValue();
 
-    if(isUpdate) {
-      updateOpenCourseById({id: isUpdate, data: data})
-    }
-    else await postNewOpenCourse(data);
-
-    getDataOpenCourse();
-    setIsModalVisible(false);
-    form.resetFields();
-    setIsUpdate(null);
-    getShift();
+      if(isUpdate) {
+        await updateOpenCourseById({id: isUpdate, ...data})
+      }
+      else await postNewOpenCourse(data);
+  
+      getDataOpenCourse();
+      setIsModalVisible(false);
+      form.resetFields();
+      setIsUpdate(null);
+      getShift();
+    })
   };
 
   const handleCancel = () => {
