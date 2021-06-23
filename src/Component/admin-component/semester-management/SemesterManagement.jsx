@@ -188,9 +188,9 @@ function SemesterManagement() {
           {...layout}
           name="basic">
           <Form.Item
-            label="Tên môn học"
+            label="Tên học kì"
             name="name"
-            rules={[{ required: true, message: 'Tên môn học là bắt buộc' }]}
+            rules={[{ required: true, message: 'Tên học kì là bắt buộc' }]}
           >
             <Input />
           </Form.Item>

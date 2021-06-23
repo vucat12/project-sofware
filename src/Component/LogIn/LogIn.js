@@ -20,7 +20,7 @@ export const LogIn = () => {
         <div className="log-in">
             <div className="background-login log-in-background"></div>
             <div className="log-in-form">
-            <div className="log-in-title">ISOMORPHIC</div>
+            <div className="log-in-title">ĐĂNG NHẬP</div>
                 <Form
             className="pt-4"
                 name="basic"
@@ -35,11 +35,11 @@ export const LogIn = () => {
                     rules={[
                     {
                         required: true,
-                        message: "Please input your username!"
+                        message: "Vui Lòng Nhập Tên Đăng Nhập!"
                     }
                     ]}
                 >
-                    <Input placeholder="Username"/>
+                    <Input placeholder="Tên Đăng Nhập"/>
                 </Form.Item>
 
                 <Form.Item
@@ -47,21 +47,20 @@ export const LogIn = () => {
                     rules={[
                     {
                         required: true,
-                        message: "Please input your password!"
+                        message: "Vui Lòng Nhập Mật Khẩu!"
                     }
                     ]}
                 >
-                    <Input type="password" placeholder="Password"/>
+                    <Input type="password" placeholder="Mật Khẩu"/>
                 </Form.Item>
 
                 <Form.Item className="pt-2">
                     <Button type="primary" htmlType="submit">
-                    Sign in
+                    Đăng Nhập
                     </Button>
                 </Form.Item>
                 </Form>
             <div className="log-in-description">
-            username: demo password: demodemo or just click on any button.
             </div>
             </div>
             

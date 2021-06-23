@@ -98,7 +98,7 @@ import { read_cookie } from '../../../services/admin/commonServices';
     ];
   
     const [dataSource, setDataSource] = useState([]);
-    const [filter, setFilter] = useState({semester_id: dataSemesters[0].id});
+    const [filter, setFilter] = useState({semester_id: dataSemesters[0]?.id});
     const [dataDetailStudent, setDataDetailStudent] = useState({});
     const [isModalVisible, setIsModalVisible] = useState(false);
   
