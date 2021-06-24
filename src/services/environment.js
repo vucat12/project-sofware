@@ -1,1 +1,1 @@
-export const environment = "http://8ef5bdbf4bdd.ngrok.io";
+export const environment = "http://6bfe940d05e5.ngrok.io";

@@ -117,11 +117,13 @@
     const handleOk = () => {
       setIsModalVisible(false);
       setDataCourse({})
+      setIsUpdateLecturer(null)
     };
   
     const handleCancel = () => {
       setIsModalVisible(false);
       setDataCourse({})
+      setIsUpdateLecturer(null)
     };
 
     const viewDataLesson = async (semesterId, id) => {

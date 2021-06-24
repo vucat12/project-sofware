@@ -18,13 +18,14 @@ const layout = {
 };
 const { Option } = Select;
 
-const dataShifts = read_cookie('getShift');
-const dataClasses = read_cookie('getClass');
-const dataCourses = read_cookie('getCourse');
-const dataLecturer = read_cookie('getLecturer');
-const dataSemesters = read_cookie('getSemester');
 
 function OpenCourse() {
+  const dataShifts = read_cookie('getShift');
+  const dataClasses = read_cookie('getClass');
+  const dataCourses = read_cookie('getCourse');
+  const dataLecturer = read_cookie('getLecturer');
+  const dataSemesters = read_cookie('getSemester');
+  
   const [dataSource, setDataSource] = useState([]);
   const [filter, setFilter] = useState({});
   const [isModalVisible, setIsModalVisible] = useState(false);

@@ -23,7 +23,16 @@ export const postNewClass = (data) => {
             Authorization: includeAuthenHeader(),
         },
         data: {...data}
-    }).catch(err => {
+    }).then(res => {
+        notification.open({
+            message: 'Success notification',
+            description: 'Thêm mới thành công',
+            style: {
+              width: 600,
+            },
+          });
+    })
+    .catch(err => {
         notification.open({
             message: 'Error notification',
             description: err.response.data.message,

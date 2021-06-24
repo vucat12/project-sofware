@@ -7,10 +7,11 @@ import { read_cookie } from '../../../services/admin/commonServices';
   import { getListTuitionPendings, postTuitionPending } from '../../../services/admin/tuitionServices';
   import './TuitionPending.scss';
 
-  const dataSemesters = read_cookie('getSemester');
   const { Option } = Select;
   
   function TuitionPending() {
+  const dataSemesters = read_cookie('getSemester');
+
     const columns = [
       {
         title: 'Tên kỳ học',

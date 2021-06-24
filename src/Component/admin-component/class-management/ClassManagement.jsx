@@ -82,12 +82,11 @@ function ClassManagement() {
     let data = form.getFieldValue();
     if (isUpdate) {
       await updateClassById({ ...data, id: isUpdate });
-      getDataClass();
     }
     else {
       await postNewClass(data);
-      getDataClass();
     }
+    getDataClass();
     setIsModalVisible(false);
     form.resetFields();
     getClass();

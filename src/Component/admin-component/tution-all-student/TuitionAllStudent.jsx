@@ -9,7 +9,6 @@ import { read_cookie } from '../../../services/admin/commonServices';
   import { getTuitionAllStudents, getTuitionDetailStudent, postTuitionStudent } from '../../../services/admin/tuitionServices';
   import './TuitionAllStudent.scss';
 
-  const dataSemesters = read_cookie('getSemester');
   const { Option } = Select;
 
 
@@ -55,6 +54,8 @@ import { read_cookie } from '../../../services/admin/commonServices';
 
   
   function TuitionAllStudent() {
+  const dataSemesters = read_cookie('getSemester');
+
     const columns = [
       {
         title: 'Tên đầy đủ',
