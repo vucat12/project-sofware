@@ -94,7 +94,7 @@ function ResolveFee() {
     <div>
     {informationFee.map(el => (
         <div className="resolve-fee-money pt-2">
-            <div className="resolve-fee-title">Thông tin học phí {el.semester}</div>
+            <div className="resolve-fee-title">Thông tin học phí {el.semester} từ {moment(el.from_date).format("DD/MM/YYYY")} - {moment(el.to_date).format("DD/MM/YYYY")}</div>
 
             <div className="resolve-fee-money__table">
                 <table style={{width: '100%'}}>

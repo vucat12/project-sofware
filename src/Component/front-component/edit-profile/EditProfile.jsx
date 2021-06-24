@@ -100,7 +100,7 @@ function EditProfile() {
     const renderSemesterTable = (el) => {
         return (
             <div className="pt-2">
-                <h3 className="edit-profile-fee-title pt-2">Thời khóa biểu học {el.name} từ {moment(el.from_date).format("DD/MM/YYYY")} đến {moment(el.to_date).format("DD/MM/YYYY")}</h3>
+                <h3 className="edit-profile-fee-title pt-2">Thời khóa biểu {el.name} từ {moment(el.from_date).format("DD/MM/YYYY")} đến {moment(el.to_date).format("DD/MM/YYYY")}</h3>
                 <Table dataSource={el.timetable} columns={columns} pagination={false} />;
             </div>
         )

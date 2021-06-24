@@ -113,7 +113,7 @@ function SignUpSubject() {
   return (
     <div className="sign-up">
       <h3 className="sign-up-title pt-2">
-        Đăng ký học phần học kỳ 1 năm 2018
+        Đăng ký học phần
       </h3>
       <div className="sign-up-information">
         <div className="sign-up-infomation__name">
