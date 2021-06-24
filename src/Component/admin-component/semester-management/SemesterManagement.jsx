@@ -85,6 +85,7 @@ function SemesterManagement() {
   async function deleteSemester(event) {
     await deleteSemesterById(event?.id);
     getDataSemester();
+    getSemester();
   }
 
   function updateSemester(e) {

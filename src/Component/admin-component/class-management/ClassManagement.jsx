@@ -40,6 +40,7 @@ function ClassManagement() {
   async function deleteClass(event) {
     await deleteClassById(event?.id);
     getDataClass();
+    getClass();
   }
 
   function updateClass(e) {

@@ -37,6 +37,7 @@ function CourseManagement() {
   async function deleteCourse(event) {
     await deleteCourseById(event?.id);
     getDataCourse();
+    getCourse();
   }
 
   function updateCourse(e) {

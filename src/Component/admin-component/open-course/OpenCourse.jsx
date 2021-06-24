@@ -107,6 +107,7 @@ function OpenCourse() {
   async function deleteOpenCourse(event) {
     await deleteOpenCourseById(event?.id);
     getDataOpenCourse();
+    getShift();
   }
 
   function updateOpenCourse(e) {
